@@ -5,11 +5,8 @@ return {
             ensure_installed = { 'vim', 'vimdoc', 'lua', 'python' },
 
             auto_install = false,
-
             highlight = { enable = true },
-
             indent = { enable = true },
-
         }
     end
 }
