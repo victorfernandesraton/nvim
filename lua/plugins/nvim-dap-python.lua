@@ -1,13 +1,18 @@
 return {
-    -- https://github.com/mfussenegger/nvim-dap-python
-    'mfussenegger/nvim-dap-python',
-    ft = 'python',
-    dependencies = {
-        -- https://github.com/mfussenegger/nvim-dap
-        'mfussenegger/nvim-dap',
+    {
+        "mfussenegger/nvim-dap",
+        optional = true,
+        dependencies = {
+            "mfussenegger/nvim-dap-python",
+            -- stylua: ignore
+            keys = {
+                { "<leader>dPt", function() require('dap-python').test_method() end, desc = "Debug Method" },
+                { "<leader>dPc", function() require('dap-python').test_class() end,  desc = "Debug Class" },
+            },
+            config = function()
+                local mason_path = vim.fn.glob(vim.fn.stdpath "data" .. "/mason/")
+                require('dap-python').setup(mason_path .. "packages/debugpy/venv/bin/python")
+            end,
+        },
     },
-    config = function()
-        -- Update the path passed to setup to point to your system or virtual env python binary
-        require('dap-python').setup('/usr/bin/python3')
-    end
 }
