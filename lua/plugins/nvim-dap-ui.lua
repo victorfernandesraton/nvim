@@ -37,8 +37,8 @@ return {
         },
         force_buffers = true,
         icons = {
-            collapsed = "",
-            current_frame = "",
+            collapsed = ">",
+            current_frame = ">",
             expanded = ""
         },
         layouts = {
@@ -50,16 +50,8 @@ return {
                     },
                     {
                         id = "stacks",
-                        size = 0.30
+                        size = 0.50
                     },
-                    {
-                        id = "watches",
-                        size = 0.10
-                    },
-                    {
-                        id = "breakpoints",
-                        size = 0.10
-                    }
                 },
                 size = 40,
                 position = "left", -- Can be "left" or "right"
@@ -91,24 +83,25 @@ return {
 
         local keymap = vim.keymap
         -- dap keybinds
-        keymap.set("n", "<leader>bb", function() dap.toggle_breakpoint() end)
-        keymap.set("n", "<leader>bc", function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end)
+        keymap.set("n", "<leader>bb", function() dap.toggle_breakpoint() end, { desc = "DAP toggle breakpoint" })
+        keymap.set("n", "<leader>bc", function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
+            { desc = "DAP set breakpoint" })
         keymap.set("n", "<leader>bl", function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
-        keymap.set("n", '<leader>br', function() dap.clear_breakpoints() end)
-        keymap.set("n", "<leader>dc", function() dap.continue() end)
-        keymap.set("n", '<leader>ba', '<cmd>Telescope dap list_breakpoints<cr>')
-        keymap.set("n", "<leader>dj", function() dap.step_over() end)
-        keymap.set("n", "<leader>dk", function() dap.step_into() end)
-        keymap.set("n", "<leader>do", function() dap.step_out() end)
+        keymap.set("n", '<leader>br', function() dap.clear_breakpoints() end, { desc = "DAP clear all breakpoints" })
+        keymap.set("n", "<F5>", function() dap.continue() end, { desc = "DAP continue" })
+        keymap.set("n", '<leader>ba', '<cmd>Telescope dap list_breakpoints<cr>', { desc = "DAP list breakpoint" })
+        keymap.set("n", "<leader>dj", function() dap.step_over() end, { desc = "DAP step over" })
+        keymap.set("n", "<leader>dk", function() dap.step_into() end, { desc = "DAP step into" })
+        keymap.set("n", "<leader>do", function() dap.step_out() end, { desc = "DAP step out" })
         keymap.set("n", '<leader>dd', function()
             require('dap').disconnect(); require('dapui').close();
-        end)
+        end, { desc = "DAP disconnect" })
         keymap.set("n", '<leader>dt', function()
             require('dap').terminate(); require('dapui').close();
-        end)
-        keymap.set("n", "<leader>dr", function() dap.repl.toggle() end)
-        keymap.set("n", "<leader>dl", function() dap.run_last() end)
-        keymap.set("n", '<leader>di', function() require "dap.ui.widgets".hover() end)
+        end, { desc = "DAP terminate" })
+        keymap.set("n", "<leader>dr", function() dap.repl.toggle() end, { desc = "DAP REPL toggle" })
+        keymap.set("n", "<leader>dl", function() dap.run_last() end, { desc = "DAP run last" })
+        keymap.set("n", '<leader>di', function() require "dap.ui.widgets".hover() end, { desc = "DAP ui hoover" })
         keymap.set("n", '<leader>d?',
             function()
                 local widgets = require "dap.ui.widgets"; widgets.centered_float(widgets.scopes)
@@ -132,12 +125,5 @@ return {
             -- Commented to prevent DAP UI from closing when unit tests finish
             -- require('dapui').close()
         end
-
-        -- Add dap configurations based on your language/adapter settings
-        -- https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
-        -- dap.configurations.xxxxxxxxxx = {
-        --   {
-        --   },
-        -- }
     end
 }

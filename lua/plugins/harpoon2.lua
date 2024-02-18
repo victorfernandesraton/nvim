@@ -23,11 +23,13 @@ return {
                 sorter = conf.generic_sorter({}),
             }):find()
         end
-        vim.keymap.set("n", "<C-a>", function() harpoon:list():append() end)
+        vim.keymap.set("n", "<C-a>", function() harpoon:list():append() end, { desc = "Add file in harpoon" })
+        vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end,
+            { desc = "show harpoon menu" })
         vim.keymap.set("n", "<leader>a", function() toggle_telescope(harpoon:list()) end,
-            { desc = "Open harpoon window" })
+            { desc = "Open harpoon telescope" })
 
-        vim.keymap.set("n", "<C-j>", function() harpoon:list():prev() end)
-        vim.keymap.set("n", "<C-k>", function() harpoon:list():next() end)
+        vim.keymap.set("n", "<C-j>", function() harpoon:list():prev() end, { desc = "Harpoon next" })
+        vim.keymap.set("n", "<C-k>", function() harpoon:list():next() end, { desc = "Harpoon previous" })
     end
 }
