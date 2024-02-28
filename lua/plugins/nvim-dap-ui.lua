@@ -89,6 +89,7 @@ return {
         keymap.set("n", "<leader>bl", function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
         keymap.set("n", '<leader>br', function() dap.clear_breakpoints() end, { desc = "DAP clear all breakpoints" })
         keymap.set("n", "<F5>", function() dap.continue() end, { desc = "DAP continue" })
+        keymap.set("n", "<leader>dpr", function() dap.test_method() end, { desc = "DAP run test for method" })
         keymap.set("n", '<leader>ba', '<cmd>Telescope dap list_breakpoints<cr>', { desc = "DAP list breakpoint" })
         keymap.set("n", "<leader>dj", function() dap.step_over() end, { desc = "DAP step over" })
         keymap.set("n", "<leader>dk", function() dap.step_into() end, { desc = "DAP step into" })
