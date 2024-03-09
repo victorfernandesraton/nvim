@@ -1,18 +1,22 @@
 return {
-    {
-        "mfussenegger/nvim-dap",
-        optional = true,
-        dependencies = {
-            "mfussenegger/nvim-dap-python",
-            -- stylua: ignore
-            keys = {
-                { "<leader>dpt", function() require('dap-python').test_method() end, desc = "Debug Method" },
-                { "<leader>dpc", function() require('dap-python').test_class() end,  desc = "Debug Class" },
-            },
-            config = function()
-                local mason_path = vim.fn.glob(vim.fn.stdpath "data" .. "/mason/")
-                require('dap-python').setup(mason_path .. "packages/debugpy/venv/bin/python")
-            end,
-        },
+    -- https://github.com/mfussenegger/nvim-dap-python
+    'mfussenegger/nvim-dap-python',
+    ft = 'python',
+    dependencies = {
+        -- https://github.com/mfussenegger/nvim-dap
+        'mfussenegger/nvim-dap',
     },
+    lazy = true,
+    keys = {
+        { "<leader>dpt", function() require('dap-python').test_method() end, desc = "Debug Method" },
+        { "<leader>dpc", function() require('dap-python').test_class() end,  desc = "Debug Class" },
+    },
+    config = function()
+        table.insert(require('dap').configurations.python, {
+            type = 'python',
+            request = 'launch',
+            name = 'Run handler.py RPA',
+            program = 'handler.py',
+        })
+    end
 }

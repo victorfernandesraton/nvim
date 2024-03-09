@@ -10,6 +10,7 @@ return {
         'theHamsta/nvim-dap-virtual-text',   -- inline variable text while debugging
         -- https://github.com/nvim-telescope/telescope-dap.nvim
         'nvim-telescope/telescope-dap.nvim', -- telescope integration with dap
+        "jay-babu/mason-nvim-dap.nvim",
     },
     opts = {
         controls = {
@@ -80,6 +81,25 @@ return {
     },
     config = function(_, opts)
         local dap = require('dap')
+
+        require('mason-nvim-dap').setup {
+            -- Makes a best effort to setup the various debuggers with
+            -- reasonable debug configurations
+            automatic_setup = true,
+
+            -- You can provide additional configuration to the handlers,
+            -- see mason-nvim-dap README for more information
+            handlers = {},
+
+            -- You'll need to check that you have the required things installed
+            -- online, please don't ask me how to install them :)
+            ensure_installed = {
+                -- Update this to ensure that you have the debuggers for the langs you want
+                'python',
+                'delve',
+                'debupy'
+            },
+        }
 
         local keymap = vim.keymap
         -- dap keybinds

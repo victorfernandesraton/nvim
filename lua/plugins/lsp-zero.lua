@@ -49,6 +49,7 @@ return {
             vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
             vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
             vim.keymap.set('n', '<leader>=', function() vim.lsp.buf.format { async = true } end, opts)
+            vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
             lsp_zero.buffer_autoformat()
             if client.name == 'ruff_lsp' then
                 -- Disable hover in favor of Pyright
@@ -145,7 +146,7 @@ return {
                 ['tsserver']      = { 'javascript', 'typescript' },
                 ['rust_analyzer'] = { 'rust' },
                 ['gofmt']         = { 'go', 'golang' },
-                ['ruff']          = { 'python' }
+                ['isrot']         = { 'python' }
             }
         })
     end
