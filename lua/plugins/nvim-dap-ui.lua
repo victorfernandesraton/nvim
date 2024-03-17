@@ -11,6 +11,9 @@ return {
         -- https://github.com/nvim-telescope/telescope-dap.nvim
         'nvim-telescope/telescope-dap.nvim', -- telescope integration with dap
         "jay-babu/mason-nvim-dap.nvim",
+        'mfussenegger/nvim-dap-python',
+        -- golang
+        'leoluz/nvim-dap-go'
     },
     opts = {
         controls = {
@@ -131,6 +134,19 @@ return {
         keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>')
         keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({ default_text = ":E:" }) end)
 
+        table.insert(require('dap').configurations.python, {
+            type = 'python',
+            request = 'launch',
+            name = 'Run handler.py RPA',
+            program = 'handler.py',
+            console = "integratedTerminal",
+        })
+
+        require("dap-go").setup()
+
+
+        vim.keymap.set("n", "<leader>dpt", ":lua require('dap-python').test_method()<CR>", { desc = "Test Method" })
+        vim.keymap.set("n", "<leader>dpc", ":lua require('dap-python').test_class()<CR>", { desc = "Debug Class" })
         require('dapui').setup(opts)
 
         dap.listeners.after.event_initialized["dapui_config"] = function()
