@@ -11,9 +11,13 @@ return {
         -- https://github.com/nvim-telescope/telescope-dap.nvim
         'nvim-telescope/telescope-dap.nvim', -- telescope integration with dap
         "jay-babu/mason-nvim-dap.nvim",
+        -- python
         'mfussenegger/nvim-dap-python',
+        "nvim-neotest/neotest",
+        "nvim-neotest/neotest-python",
         -- golang
-        'leoluz/nvim-dap-go'
+        "leoluz/nvim-dap-go",
+        "nvim-neotest/neotest-go"
     },
     opts = {
         controls = {
@@ -134,6 +138,9 @@ return {
         keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>')
         keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({ default_text = ":E:" }) end)
 
+
+        require("dap-go").setup()
+        require("dap-python").setup()
         table.insert(require('dap').configurations.python, {
             type = 'python',
             request = 'launch',
@@ -142,11 +149,46 @@ return {
             console = "integratedTerminal",
         })
 
-        require("dap-go").setup()
+        table.insert(require('dap').configurations.python, {
+            name = "Pytest: Current File",
+            type = "python",
+            request = "launch",
+            module = "pytest",
+            args = {
+                "${file}",
+                "-sv",
+                "--no-cov"
+            },
+            console = "integratedTerminal",
+        })
+
+        require("neotest").setup({
+            adapters = {
+                require("neotest-python")({
+                    -- Extra arguments for nvim-dap configuration
+                    -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
+                    dap = {
+                        justMyCode = false,
+                        console = "integratedTerminal",
+                    },
+                    args = { "--log-level", "DEBUG", "--quiet" },
+                    runner = "pytest",
+                }),
+                require("neotest-go")({})
+            }
+        })
+
+        keymap.set("n", "<leader>dm", "<cmd>lua require('neotest').run.run()<cr>", { desc = "Neotest: Test Method" })
+        keymap.set("n", "<leader>dM", "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>",
+            { desc = "Test Method DAP" })
+        keymap.set("n", "<leader>df", "<cmd>lua require('neotest').run.run({vim.fn.expand('%')})<cr>",
+            { desc = "Neotest: Test Class" })
+        keymap.set("n", "<leader>dF", "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<cr>",
+            { desc = "Neotest: Test Class DAP" })
+        keymap.set("n", "<leader>dS", "<cmd>lua require('neotest').summary.toggle()<cr>", { desc =
+        "Neotest: Test Summary" })
 
 
-        vim.keymap.set("n", "<leader>dpt", ":lua require('dap-python').test_method()<CR>", { desc = "Test Method" })
-        vim.keymap.set("n", "<leader>dpc", ":lua require('dap-python').test_class()<CR>", { desc = "Debug Class" })
         require('dapui').setup(opts)
 
         dap.listeners.after.event_initialized["dapui_config"] = function()

@@ -51,10 +51,6 @@ return {
             vim.keymap.set('n', '<leader>=', function() vim.lsp.buf.format { async = true } end, opts)
             vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
             lsp_zero.buffer_autoformat()
-            if client.name == 'ruff_lsp' then
-                -- Disable hover in favor of Pyright
-                client.server_capabilities.hoverProvider = false
-            end
         end)
 
         lsp_zero.on_attach(on_attach)
@@ -65,46 +61,60 @@ return {
         require('mason-tool-installer').setup({
             -- Install these linters, formatters, debuggers automatically
             ensure_installed = {
-                'ruff',
                 'debugpy',
                 'mypy',
+                'black',
+                'isort'
             },
         })
         require('mason-lspconfig').setup({
-            ensure_installed = { 'tsserver', 'rust_analyzer', 'pyright', 'eslint', 'gopls', 'ruff_lsp', },
+            ensure_installed = { 'tsserver', 'rust_analyzer', 'pylsp', 'eslint', 'gopls', 'sqlls', },
             handlers = {
                 lsp_zero.default_setup,
                 lua_ls = function()
                     local lua_opts = lsp_zero.nvim_lua_ls()
                     require('lspconfig').lua_ls.setup(lua_opts)
                 end,
-                ruff_lsp = function()
-                    require('lspconfig').ruff_lsp.setup {
-                        on_attach = on_attach,
-                        default_config = {
-                            cmd = { 'ruff-lsp' },
-                            filetypes = { 'python' },
-                            root_dir = require('lspconfig').util.find_git_ancestor,
-                            init_options = {
-                                settings = {
-                                    args = {}
-                                }
-                            }
-                        }
-                    }
-                end,
-                pyright = function()
-                    require('lspconfig').pyright.setup {
-                        on_attach = on_attach,
+                pylsp = function()
+                    local venv_path = os.getenv('VIRTUAL_ENV')
+                    local py_path = nil
+                    -- decide which python executable to use for mypy
+                    if venv_path ~= nil then
+                        py_path = venv_path .. "/bin/python3"
+                    else
+                        py_path = vim.g.python3_host_prog
+                    end
+
+                    require("lspconfig").pylsp.setup {
                         settings = {
-                            pyright = {
-                                -- Using Ruff's import organizer
-                                disableOrganizeImports = true,
-                            },
-                            python = {
-                                analysis = {
-                                    -- Ignore all files for analysis to exclusively use Ruff for linting
-                                    ignore = { '*' },
+                            pylsp = {
+                                plugins = {
+                                    -- formatter options
+                                    black = { enabled = false },
+                                    autopep8 = { enabled = false },
+                                    yapf = { enabled = false },
+                                    -- linter options
+                                    pylint = { enabled = false, executable = "pylint" },
+                                    ruff = {
+                                        -- formatter + Linter + isort
+                                        enabled = true,
+                                        extendSelect = { "I" },
+                                        targetVersion = "py38", -- The minimum python version to target (applies for both linting and formatting).
+                                        format = { "I" },       -- Rules that are marked as fixable by ruff that should be fixed when running textDocument/formatting
+                                    },
+                                    pyflakes = { enabled = false },
+                                    pycodestyle = { enabled = false },
+                                    -- type checker
+                                    pylsp_mypy = {
+                                        enabled = true,
+                                        report_progress = true,
+                                        overrides = { "--python-executable", py_path, true },
+                                        live_mode = true
+                                    },
+                                    -- auto-completion options
+                                    jedi_completion = { fuzzy = true },
+                                    -- import sorting
+                                    isort = { enabled = false },
                                 },
                             },
                         },
@@ -140,13 +150,13 @@ return {
         lsp_zero.format_on_save({
             format_opts = {
                 async = false,
-                timeout_ms = 10000,
+                timeout_ms = 1000,
             },
             servers = {
                 ['tsserver']      = { 'javascript', 'typescript' },
                 ['rust_analyzer'] = { 'rust' },
                 ['gofmt']         = { 'go', 'golang' },
-                ['isrot']         = { 'python' }
+                ['pylsp']         = { 'python' }
             }
         })
     end
