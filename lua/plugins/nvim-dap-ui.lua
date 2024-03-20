@@ -108,36 +108,6 @@ return {
             },
         }
 
-        local keymap = vim.keymap
-        -- dap keybinds
-        keymap.set("n", "<leader>bb", function() dap.toggle_breakpoint() end, { desc = "DAP toggle breakpoint" })
-        keymap.set("n", "<leader>bc", function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
-            { desc = "DAP set breakpoint" })
-        keymap.set("n", "<leader>bl", function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
-        keymap.set("n", '<leader>br', function() dap.clear_breakpoints() end, { desc = "DAP clear all breakpoints" })
-        keymap.set("n", "<F5>", function() dap.continue() end, { desc = "DAP continue" })
-        keymap.set("n", "<leader>dpr", function() dap.test_method() end, { desc = "DAP run test for method" })
-        keymap.set("n", '<leader>ba', '<cmd>Telescope dap list_breakpoints<cr>', { desc = "DAP list breakpoint" })
-        keymap.set("n", "<leader>dj", function() dap.step_over() end, { desc = "DAP step over" })
-        keymap.set("n", "<leader>dk", function() dap.step_into() end, { desc = "DAP step into" })
-        keymap.set("n", "<leader>do", function() dap.step_out() end, { desc = "DAP step out" })
-        keymap.set("n", '<leader>dd', function()
-            require('dap').disconnect(); require('dapui').close();
-        end, { desc = "DAP disconnect" })
-        keymap.set("n", '<leader>dt', function()
-            require('dap').terminate(); require('dapui').close();
-        end, { desc = "DAP terminate" })
-        keymap.set("n", "<leader>dr", function() dap.repl.toggle() end, { desc = "DAP REPL toggle" })
-        keymap.set("n", "<leader>dl", function() dap.run_last() end, { desc = "DAP run last" })
-        keymap.set("n", '<leader>di', function() require "dap.ui.widgets".hover() end, { desc = "DAP ui hoover" })
-        keymap.set("n", '<leader>d?',
-            function()
-                local widgets = require "dap.ui.widgets"; widgets.centered_float(widgets.scopes)
-            end)
-        keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>')
-        keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>')
-        keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({ default_text = ":E:" }) end)
-
 
         require("dap-go").setup()
         require("dap-python").setup()
@@ -178,15 +148,47 @@ return {
             }
         })
 
-        keymap.set("n", "<leader>dm", "<cmd>lua require('neotest').run.run()<cr>", { desc = "Neotest: Test Method" })
-        keymap.set("n", "<leader>dM", "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>",
+        local keymap = vim.keymap
+        -- dap keybinds
+        keymap.set("n", "<leader>bb", function() dap.toggle_breakpoint() end, { desc = "DAP toggle breakpoint" })
+        keymap.set("n", "<leader>bc", function() dap.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end,
+            { desc = "DAP set breakpoint" })
+        keymap.set("n", "<leader>bl", function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
+        keymap.set("n", '<leader>br', function() dap.clear_breakpoints() end, { desc = "DAP clear all breakpoints" })
+        keymap.set("n", "<F5>", function() dap.continue() end, { desc = "DAP continue" })
+        keymap.set("n", '<leader>ba', '<cmd>Telescope dap list_breakpoints<cr>', { desc = "DAP list breakpoint" })
+        keymap.set("n", "<leader>dj", function() dap.step_over() end, { desc = "DAP step over" })
+        keymap.set("n", "<leader>dk", function() dap.step_into() end, { desc = "DAP step into" })
+        keymap.set("n", "<leader>do", function() dap.step_out() end, { desc = "DAP step out" })
+        keymap.set("n", '<leader>dd', function()
+            require('dap').disconnect(); require('dapui').close();
+        end, { desc = "DAP disconnect" })
+        keymap.set("n", '<leader>dt', function()
+            require('dap').terminate(); require('dapui').close();
+        end, { desc = "DAP terminate" })
+        keymap.set("n", "<leader>dr", function() dap.repl.toggle() end, { desc = "DAP REPL toggle" })
+        keymap.set("n", "<leader>dl", function() dap.run_last() end, { desc = "DAP run last" })
+        keymap.set("n", '<leader>di', function() require "dap.ui.widgets".hover() end, { desc = "DAP ui hoover" })
+        keymap.set("n", '<leader>d?',
+            function()
+                local widgets = require "dap.ui.widgets"; widgets.centered_float(widgets.scopes)
+            end)
+
+        keymap.set("n", '<leader>df', '<cmd>Telescope dap frames<cr>')
+        keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>')
+        keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({ default_text = ":E:" }) end)
+
+        keymap.set("n", "<leader>tm", "<cmd>lua require('neotest').run.run()<cr>", { desc = "Neotest: Test Method" })
+        keymap.set("n", "<leader>tM", "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>",
             { desc = "Test Method DAP" })
-        keymap.set("n", "<leader>df", "<cmd>lua require('neotest').run.run({vim.fn.expand('%')})<cr>",
+        keymap.set("n", "<leader>tf", "<cmd>lua require('neotest').run.run({vim.fn.expand('%')})<cr>",
             { desc = "Neotest: Test Class" })
-        keymap.set("n", "<leader>dF", "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<cr>",
+        keymap.set("n", "<leader>tF", "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<cr>",
             { desc = "Neotest: Test Class DAP" })
-        keymap.set("n", "<leader>dS", "<cmd>lua require('neotest').summary.toggle()<cr>", { desc =
-        "Neotest: Test Summary" })
+        keymap.set("n", "<leader>tS", "<cmd>lua require('neotest').summary.toggle()<cr>", {
+            desc =
+            "Neotest: Test Summary"
+        })
 
 
         require('dapui').setup(opts)
