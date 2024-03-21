@@ -17,7 +17,8 @@ return {
         "nvim-neotest/neotest-python",
         -- golang
         "leoluz/nvim-dap-go",
-        "nvim-neotest/neotest-go"
+        "nvim-neotest/neotest-go",
+        "nvim-neotest/nvim-nio"
     },
     opts = {
         controls = {
