@@ -63,8 +63,6 @@ return {
             ensure_installed = {
                 'debugpy',
                 'mypy',
-                'black',
-                'isort'
             },
         })
         require('mason-lspconfig').setup({
@@ -76,6 +74,7 @@ return {
                     require('lspconfig').lua_ls.setup(lua_opts)
                 end,
                 pylsp = function()
+                    local lsp = require('lsp-zero')
                     local venv_path = os.getenv('VIRTUAL_ENV')
                     local py_path = nil
                     -- decide which python executable to use for mypy
@@ -84,8 +83,7 @@ return {
                     else
                         py_path = vim.g.python3_host_prog
                     end
-
-                    require("lspconfig").pylsp.setup {
+                    lsp.configure('pylsp', {
                         settings = {
                             pylsp = {
                                 plugins = {
@@ -118,7 +116,8 @@ return {
                                 },
                             },
                         },
-                    }
+                    })
+                    lsp.setup()
                 end
             }
         })
