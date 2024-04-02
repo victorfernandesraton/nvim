@@ -97,7 +97,10 @@ return {
 
             -- You can provide additional configuration to the handlers,
             -- see mason-nvim-dap README for more information
-            handlers = {},
+            handlers = {
+               
+            },
+
 
             -- You'll need to check that you have the required things installed
             -- online, please don't ask me how to install them :)
@@ -111,7 +114,8 @@ return {
 
 
         require("dap-go").setup()
-        require("dap-python").setup()
+
+        -- require("dap-python").setup(path .. "/venv/bin/python")
         table.insert(require('dap').configurations.python, {
             type = 'python',
             request = 'launch',
@@ -133,6 +137,29 @@ return {
             console = "integratedTerminal",
         })
 
+
+        table.insert(require('dap').configurations.python, {
+            type = 'python',
+            request = 'launch',
+            name = 'DAP Django',
+            program = vim.loop.cwd() .. '/manage.py',
+            args = {'runserver', '--noreload'},
+            justMyCode = true,
+            django = true,
+            console = "integratedTerminal",
+        })
+
+        table.insert(require('dap').configurations.python, {
+            type = 'python';
+            request = 'attach';
+            name = 'Attach remote';
+            connect = function()
+                return {
+                    host = '127.0.0.1',
+                    port = 5678
+                }
+            end;
+        })
         require("neotest").setup({
             adapters = {
                 require("neotest-python")({
