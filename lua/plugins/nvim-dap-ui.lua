@@ -53,17 +53,13 @@ return {
         layouts = {
             {
                 elements = {
-                    {
-                        id = "scopes",
-                        size = 0.50
-                    },
-                    {
-                        id = "stacks",
-                        size = 0.50
-                    },
+                    { id = "scopes", size = 0.25 },
+                    "breakpoints",
+                    "stacks",
+                    "watches",
                 },
-                size = 40,
-                position = "left", -- Can be "left" or "right"
+                size = 40, -- 40 columns
+                position = "left",
             },
             {
                 elements = {
@@ -88,12 +84,39 @@ return {
         }
     },
     config = function(_, opts)
+        local is_windows = function()
+            return vim.fn.has("win32") == 1
+        end
+
+        local function python_exe(venv)
+            if is_windows() then
+                return venv .. '\\Scripts\\python.exe'
+            end
+            return venv .. '/bin/python'
+        end
+        local get_python_path = function()
+            local venv_path = os.getenv('VIRTUAL_ENV')
+            if venv_path then
+                return python_exe(venv_path)
+            end
+
+            venv_path = os.getenv("CONDA_PREFIX")
+            if venv_path then
+                if is_windows() then
+                    return venv_path .. '\\python.exe'
+                end
+                return venv_path .. '/bin/python'
+            end
+        end
+
         local dap = require('dap')
 
         require('mason-nvim-dap').setup {
             -- Makes a best effort to setup the various debuggers with
             -- reasonable debug configurations
             automatic_setup = true,
+            automatic_installation = true,
+
 
             -- You can provide additional configuration to the handlers,
             -- see mason-nvim-dap README for more information
@@ -114,17 +137,16 @@ return {
 
 
         require("dap-go").setup()
-
-        -- require("dap-python").setup(path .. "/venv/bin/python")
-        table.insert(require('dap').configurations.python, {
+        table.insert(dap.configurations.python, {
             type = 'python',
             request = 'launch',
             name = 'Run handler.py RPA',
             program = 'handler.py',
             console = "integratedTerminal",
+            pythonPath = get_python_path()
         })
 
-        table.insert(require('dap').configurations.python, {
+        table.insert(dap.configurations.python, {
             name = "Pytest: Current File",
             type = "python",
             request = "launch",
@@ -138,7 +160,7 @@ return {
         })
 
 
-        table.insert(require('dap').configurations.python, {
+        table.insert(dap.configurations.python, {
             type = 'python',
             request = 'launch',
             name = 'DAP Django',
@@ -149,7 +171,7 @@ return {
             console = "integratedTerminal",
         })
 
-        table.insert(require('dap').configurations.python, {
+        table.insert(dap.configurations.python, {
             type = 'python';
             request = 'attach';
             name = 'Attach remote';
@@ -224,6 +246,9 @@ return {
         dap.listeners.after.event_initialized["dapui_config"] = function()
             require('dapui').open()
         end
+        dap.listeners.after.event_terminated["dapui_config"] = function()
+            -- require('dapui').close()
+        end
 
         dap.listeners.before.event_terminated["dapui_config"] = function()
             -- Commented to prevent DAP UI from closing when unit tests finish
@@ -232,7 +257,7 @@ return {
 
         dap.listeners.before.event_exited["dapui_config"] = function()
             -- Commented to prevent DAP UI from closing when unit tests finish
-            -- require('dapui').close()
+           -- require('dapui').close()
         end
     end
 }
