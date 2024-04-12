@@ -2,7 +2,6 @@ vim.g.mapleader = " "
 local keymap = vim.keymap
 -- show file explorer
 keymap.set("n", "<leader>pv", vim.cmd.Ex)
-keymap.set("n", "<leader>pb", ":Neotree toggle<CR>")
 
 -- copy things from vim to my system
 keymap.set("n", "<leader>y", "\"+ y")
@@ -18,3 +17,4 @@ keymap.set("n", "<leader>y", "\"+y")
 keymap.set("v", "<leader>y", "\"+y")
 keymap.set("n", "<leader>d", "\"_d")
 keymap.set("v", "<leader>d", "\"_d")
+keymap.set("n", "<C-r>", ":source $MYVIMRC<CR>", {desc = "Restart neovim"})

@@ -4,7 +4,7 @@ return {
     opts = {
     },
     config = function()
-        vim.keymap.set("n", "<leader>xx", function() require("trouble").toggle() end, { desc = "Trouble: toggle" })
+        vim.keymap.set("n", "<leader>xx",function() require("trouble").toggle() end, { desc = "Trouble: toggle" })
         vim.keymap.set("n", "<leader>xw", function() require("trouble").toggle("workspace_diagnostics") end,
             { desc = "Trouble: workspace" })
         vim.keymap.set("n", "<leader>xd", function() require("trouble").toggle("document_diagnostics") end,
