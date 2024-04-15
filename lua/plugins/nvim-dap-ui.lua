@@ -110,6 +110,7 @@ return {
         end
 
         local dap = require('dap')
+        dap.exception_breakpoints = { "Notice", "Warning", "Error", "Exception" }
 
         require('mason-nvim-dap').setup {
             -- Makes a best effort to setup the various debuggers with
