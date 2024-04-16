@@ -18,12 +18,14 @@ return {
         -- golang
         "leoluz/nvim-dap-go",
         "nvim-neotest/neotest-go",
-        "nvim-neotest/nvim-nio"
+        "nvim-neotest/nvim-nio",
+        -- js
+        "mxsdev/nvim-dap-vscode-js",
     },
     opts = {
         controls = {
             element = "repl",
-            enabled = false,
+            enabled = true,
             icons = {
                 disconnect = "",
                 pause = "",
@@ -110,7 +112,11 @@ return {
         end
 
         local dap = require('dap')
-        dap.exception_breakpoints = { "Notice", "Warning", "Error", "Exception" }
+        local dapui = require('dapui')
+
+        -- require('dap').defaults.fallback.exception_breakpoints = {"raised", "uncaught"}
+        -- dap.defaults.fallback.exception_breakpoints = {'raised'}
+        -- dap.exception_breakpoints = { "Notice", "Warning", "Error", "Exception" }
 
         require('mason-nvim-dap').setup {
             -- Makes a best effort to setup the various debuggers with
@@ -183,7 +189,8 @@ return {
                 }
             end;
         })
-        require("neotest").setup({
+        local neotest = require("neotest")
+        neotest.setup({
             adapters = {
                 require("neotest-python")({
                     -- Extra arguments for nvim-dap configuration
@@ -198,6 +205,50 @@ return {
                 require("neotest-go")({})
             }
         })
+        dap_vscode_js = require("dap-vscode-js")
+        dap_vscode_js.setup({
+            -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
+            -- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
+            -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
+            adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' }, -- which adapters to register in nvim-dap
+            -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
+            -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
+            -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
+        })
+
+        for _, language in ipairs({ "typescript", "javascript" }) do
+            dap.configurations[language] = {
+                {
+                    type = "pwa-node",
+                    request = "launch",
+                    name = "Launch file",
+                    program = "${file}",
+                    cwd = "${workspaceFolder}",
+                },
+                {
+                    type = "pwa-node",
+                    request = "attach",
+                    name = "Attach",
+                    processId = require'dap.utils'.pick_process,
+                    cwd = "${workspaceFolder}",
+                },
+                {
+                    type = "pwa-node",
+                    request = "launch",
+                    name = "Debug Jest Tests",
+                    -- trace = true, -- include debugger info
+                    runtimeExecutable = "node",
+                    runtimeArgs = {
+                        "./node_modules/jest/bin/jest.js",
+                        "--runInBand",
+                    },
+                    rootPath = "${workspaceFolder}",
+                    cwd = "${workspaceFolder}",
+                    console = "integratedTerminal",
+                    internalConsoleOptions = "neverOpen",
+                }
+            }
+        end
 
         local keymap = vim.keymap
         -- dap keybinds
@@ -207,18 +258,20 @@ return {
         keymap.set("n", "<leader>bl", function() dap.set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end)
         keymap.set("n", '<leader>br', function() dap.clear_breakpoints() end, { desc = "DAP clear all breakpoints" })
         keymap.set("n", "<F5>", function() dap.continue() end, { desc = "DAP continue" })
+
+        keymap.set("n", "<leader>dR", function() dap.restart() end, { desc = "DAP restart" })
         keymap.set("n", '<leader>ba', '<cmd>Telescope dap list_breakpoints<cr>', { desc = "DAP list breakpoint" })
-        keymap.set("n", "<leader>dj", function() dap.step_over() end, { desc = "DAP step over" })
-        keymap.set("n", "<leader>dk", function() dap.step_into() end, { desc = "DAP step into" })
-        keymap.set("n", "<leader>do", function() dap.step_out() end, { desc = "DAP step out" })
+        keymap.set("n", "<F6>", function() dap.step_over() end, { desc = "DAP step over" })
+        keymap.set("n", "<F7>", function() dap.step_into() end, { desc = "DAP step into" })
+        keymap.set("n", "<F8>", function() dap.step_out() end, { desc = "DAP step out" })
         keymap.set("n", '<leader>dd', function()
-            require('dap').disconnect(); require('dapui').close();
+            dap.disconnect(); dapui.close();
         end, { desc = "DAP disconnect" })
         keymap.set("n", '<leader>dt', function()
-            require('dap').terminate(); require('dapui').close();
+            dap.terminate(); dapui.close();
         end, { desc = "DAP terminate" })
         keymap.set("n", "<leader>dr", function() dap.repl.toggle() end, { desc = "DAP REPL toggle" })
-        keymap.set("n", "<leader>dl", function() dap.run_last() end, { desc = "DAP run last" })
+        keymap.set("n", "<s-F5>", function() dap.run_last() end, { desc = "DAP run last" })
         keymap.set("n", '<leader>di', function() require "dap.ui.widgets".hover() end, { desc = "DAP ui hoover" })
         keymap.set("n", '<leader>d?',
             function()
@@ -229,23 +282,23 @@ return {
         keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>')
         keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({ default_text = ":E:" }) end)
 
-        keymap.set("n", "<leader>tm", "<cmd>lua require('neotest').run.run()<cr>", { desc = "Neotest: Test Method" })
-        keymap.set("n", "<leader>tM", "<cmd>lua require('neotest').run.run({strategy = 'dap'})<cr>",
+        keymap.set("n", "<leader>tm", function() neotest.run.run() end, { desc = "Neotest: Test Method" })
+        keymap.set("n", "<leader>tM", function() neotest.run.run({strategy = 'dap'}) end,
             { desc = "Test Method DAP" })
-        keymap.set("n", "<leader>tf", "<cmd>lua require('neotest').run.run({vim.fn.expand('%')})<cr>",
+        keymap.set("n", "<leader>tf", function() neotest.run.run({vim.fn.expand('%')}) end,
             { desc = "Neotest: Test Class" })
-        keymap.set("n", "<leader>tF", "<cmd>lua require('neotest').run.run({vim.fn.expand('%'), strategy = 'dap'})<cr>",
+        keymap.set("n", "<leader>tF", function() neotest.run.run({vim.fn.expand('%'), strategy = 'dap'}) end,
             { desc = "Neotest: Test Class DAP" })
-        keymap.set("n", "<leader>tS", "<cmd>lua require('neotest').summary.toggle()<cr>", {
+        keymap.set("n", "<leader>tS", function() neotest.summary.toggle() end, {
             desc =
-            "Neotest: Test Summary"
+                "Neotest: Test Summary"
         })
 
 
-        require('dapui').setup(opts)
+        dapui.setup(opts)
 
         dap.listeners.after.event_initialized["dapui_config"] = function()
-            require('dapui').open()
+            dapui.open()
         end
         dap.listeners.after.event_terminated["dapui_config"] = function()
             -- require('dapui').close()
