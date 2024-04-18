@@ -271,7 +271,7 @@ return {
             dap.terminate(); dapui.close();
         end, { desc = "DAP terminate" })
         keymap.set("n", "<leader>dr", function() dap.repl.toggle() end, { desc = "DAP REPL toggle" })
-        keymap.set("n", "<s-F5>", function() dap.run_last() end, { desc = "DAP run last" })
+        keymap.set("n", "<F9>", function() dap.run_last() end, { desc = "DAP run last" })
         keymap.set("n", '<leader>di', function() require "dap.ui.widgets".hover() end, { desc = "DAP ui hoover" })
         keymap.set("n", '<leader>d?',
             function()
