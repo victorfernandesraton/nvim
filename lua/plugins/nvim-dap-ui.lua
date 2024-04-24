@@ -128,7 +128,7 @@ return {
             -- You can provide additional configuration to the handlers,
             -- see mason-nvim-dap README for more information
             handlers = {
-               
+
             },
 
 
@@ -172,22 +172,22 @@ return {
             request = 'launch',
             name = 'DAP Django',
             program = vim.loop.cwd() .. '/manage.py',
-            args = {'runserver', '--noreload'},
+            args = { 'runserver', '--noreload' },
             justMyCode = true,
             django = true,
             console = "integratedTerminal",
         })
 
         table.insert(dap.configurations.python, {
-            type = 'python';
-            request = 'attach';
-            name = 'Attach remote';
+            type = 'python',
+            request = 'attach',
+            name = 'Attach remote',
             connect = function()
                 return {
                     host = '127.0.0.1',
                     port = 5678
                 }
-            end;
+            end,
         })
         local neotest = require("neotest")
         neotest.setup({
@@ -205,7 +205,7 @@ return {
                 require("neotest-go")({})
             }
         })
-        dap_vscode_js = require("dap-vscode-js")
+        local dap_vscode_js = require("dap-vscode-js")
         dap_vscode_js.setup({
             -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
             -- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
@@ -229,7 +229,7 @@ return {
                     type = "pwa-node",
                     request = "attach",
                     name = "Attach",
-                    processId = require'dap.utils'.pick_process,
+                    processId = require 'dap.utils'.pick_process,
                     cwd = "${workspaceFolder}",
                 },
                 {
@@ -283,15 +283,15 @@ return {
         keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({ default_text = ":E:" }) end)
 
         keymap.set("n", "<leader>tm", function() neotest.run.run() end, { desc = "Neotest: Test Method" })
-        keymap.set("n", "<leader>tM", function() neotest.run.run({strategy = 'dap'}) end,
+        keymap.set("n", "<leader>tM", function() neotest.run.run({ strategy = 'dap' }) end,
             { desc = "Test Method DAP" })
-        keymap.set("n", "<leader>tf", function() neotest.run.run({vim.fn.expand('%')}) end,
+        keymap.set("n", "<leader>tf", function() neotest.run.run({ vim.fn.expand('%') }) end,
             { desc = "Neotest: Test Class" })
-        keymap.set("n", "<leader>tF", function() neotest.run.run({vim.fn.expand('%'), strategy = 'dap'}) end,
+        keymap.set("n", "<leader>tF", function() neotest.run.run({ vim.fn.expand('%'), strategy = 'dap' }) end,
             { desc = "Neotest: Test Class DAP" })
         keymap.set("n", "<leader>tS", function() neotest.summary.toggle() end, {
             desc =
-                "Neotest: Test Summary"
+            "Neotest: Test Summary"
         })
 
 
@@ -311,7 +311,7 @@ return {
 
         dap.listeners.before.event_exited["dapui_config"] = function()
             -- Commented to prevent DAP UI from closing when unit tests finish
-           -- require('dapui').close()
+            -- require('dapui').close()
         end
     end
 }
