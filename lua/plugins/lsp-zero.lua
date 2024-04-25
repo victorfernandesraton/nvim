@@ -109,7 +109,7 @@ return {
                                     },
                                     -- auto-completion options
                                     jedi_completion = { fuzzy = true },
-                                    rope_autoimport = { enabled = true },
+                                    rope_autoimport = { enabled = false },
                                     -- import sorting
                                     isort = { enabled = false },
                                 },
