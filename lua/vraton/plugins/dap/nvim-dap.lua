@@ -7,8 +7,7 @@ return {
         -- https://github.com/mfussenegger/nvim-dap
         'mfussenegger/nvim-dap',
 
-        'williamboman/mason.nvim',
-
+        { "williamboman/mason.nvim", opts = { PATH = "append" } },
         -- https://github.com/theHamsta/nvim-dap-virtual-text
         'theHamsta/nvim-dap-virtual-text',   -- inline variable text while debugging
         -- https://github.com/nvim-telescope/telescope-dap.nvim
@@ -19,7 +18,6 @@ return {
         -- python
         'mfussenegger/nvim-dap-python',
         -- js
-        "mxsdev/nvim-dap-vscode-js",
     },
     opts = {
         controls = {
@@ -114,7 +112,6 @@ return {
         require('mason-nvim-dap').setup {
             -- Makes a best effort to setup the various debuggers with
             -- reasonable debug configurations
-            automatic_setup = true,
             automatic_installation = true,
 
 
@@ -126,55 +123,7 @@ return {
                     -- Keep original functionality
                     require('mason-nvim-dap').default_setup(config)
                 end,
-                python = function(config)
-                    require('mason-nvim-dap').default_setup(config) -- don't forget this!
 
-                    table.insert(require('dap').configurations.python, {
-                        type = 'python',
-                        request = 'launch',
-                        name = 'Run handler.py RPA',
-                        program = 'handler.py',
-                        console = "integratedTerminal",
-                        pythonPath = get_python_path()
-                    })
-
-                    table.insert(require('dap').configurations.python, {
-                        name = "Pytest: Current File",
-                        type = "python",
-                        request = "launch",
-                        module = "pytest",
-                        args = {
-                            "${file}",
-                        },
-                        pythonPath = get_python_path(),
-                        console = "integratedTerminal",
-                    })
-
-
-                    table.insert(require('dap').configurations.python, {
-                        type = 'python',
-                        request = 'launch',
-                        name = 'DAP Django',
-                        program = vim.loop.cwd() .. '/manage.py',
-                        args = { 'runserver', '--noreload' },
-                        justMyCode = true,
-                        django = true,
-                        console = "integratedTerminal",
-                        pythonPath = get_python_path(),
-                    })
-
-                    table.insert(require('dap').configurations.python, {
-                        type = 'python',
-                        request = 'attach',
-                        name = 'Attach remote',
-                        connect = function()
-                            return {
-                                host = '127.0.0.1',
-                                port = 5678
-                            }
-                        end,
-                    })
-                end,
             },
 
 
@@ -187,56 +136,26 @@ return {
             },
         }
 
-
-
-
-        require("dap-go").setup()
-
-        local dap_vscode_js = require("dap-vscode-js")
-        dap_vscode_js.setup({
-            adapters = {
-                'pwa-node',
-                'pwa-chrome',
-                'pwa-msedge',
-                'node-terminal',
-                'pwa-extensionHost'
-            }, -- which adapters to register in nvim-dap
+        table.insert(require('dap').configurations.python, {
+            type = 'python',
+            request = 'launch',
+            name = 'Run handler.py RPA',
+            program = 'handler.py',
+            console = "integratedTerminal",
+            pythonPath = get_python_path()
         })
 
-        for _, language in ipairs({ "typescript", "javascript" }) do
-            dap.configurations[language] = {
-                {
-                    type = "pwa-node",
-                    request = "launch",
-                    name = "Launch file",
-                    program = "${file}",
-                    cwd = "${workspaceFolder}",
-                },
-                {
-                    type = "pwa-node",
-                    request = "attach",
-                    name = "Attach",
-                    processId = require 'dap.utils'.pick_process,
-                    cwd = "${workspaceFolder}",
-                },
-                {
-                    type = "pwa-node",
-                    request = "launch",
-                    name = "Debug Jest Tests",
-                    -- trace = true, -- include debugger info
-                    runtimeExecutable = "node",
-                    runtimeArgs = {
-                        "./node_modules/jest/bin/jest.js",
-                        "--runInBand",
-                    },
-                    rootPath = "${workspaceFolder}",
-                    cwd = "${workspaceFolder}",
-                    console = "integratedTerminal",
-                    internalConsoleOptions = "neverOpen",
-                }
-            }
-        end
-
+        table.insert(require('dap').configurations.python, {
+            name = "Pytest: Current File",
+            type = "python",
+            request = "launch",
+            module = "pytest",
+            args = {
+                "${file}",
+            },
+            pythonPath = get_python_path(),
+            console = "integratedTerminal",
+        })
         local keymap = vim.keymap
         -- dap keybinds
         keymap.set("n", "<leader>bb", function() dap.toggle_breakpoint() end, { desc = "DAP toggle breakpoint" })
@@ -256,9 +175,6 @@ return {
         keymap.set("n", '<leader>dd', function()
             dap.disconnect(); dapui.close();
         end, { desc = "DAP disconnect" })
-        keymap.set("n", '<leader>dT', function()
-            dap.terminate(); dapui.close();
-        end, { desc = "DAP terminate" })
         keymap.set("n", "<leader>dr", function() dap.repl.toggle() end, { desc = "DAP REPL toggle" })
         keymap.set("n", "<F9>", function() dap.run_last() end, { desc = "DAP run last" })
         keymap.set("n", '<leader>di', function() require "dap.ui.widgets".hover() end, { desc = "DAP ui hoover" })
