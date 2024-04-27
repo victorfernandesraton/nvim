@@ -1,34 +1,19 @@
 return {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v3.x',
-    lazy = false,
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        { 'williamboman/mason.nvim' },
-        { 'williamboman/mason-lspconfig.nvim' },
-        -- Auto-Install LSPs, linters, formatters, debuggers
-        -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim
-        { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
+        "williamboman/mason-lspconfig.nvim",
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
 
-        { "hrsh7th/cmp-nvim-lsp" },
-        { "hrsh7th/cmp-buffer" },
-        { "hrsh7th/cmp-path" },
-        { "hrsh7th/nvim-cmp" },
-        { "hrsh7th/cmp-nvim-lua" },
-        { "saadparwaiz1/cmp_luasnip" },
+        { 'williamboman/mason.nvim' },
+
         { "rafamadriz/friendly-snippets" },
         {
             'neovim/nvim-lspconfig',
             dependencies = {
                 { 'hrsh7th/cmp-nvim-lsp' },
             }
-        },
-
-        -- Autocompletion
-        {
-            'hrsh7th/nvim-cmp',
-            dependencies = {
-                { 'L3MON4D3/LuaSnip' }
-            },
         },
     },
     config = function()
@@ -51,49 +36,52 @@ return {
             vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
         end)
 
+        local mason_lspconfig = require("mason-lspconfig")
+
         lsp_zero.on_attach(on_attach)
         lsp_zero.buffer_autoformat()
-        -- to learn how to use mason.nvim with lsp-zero
-        -- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
+        -- import mason
+        local mason = require("mason")
 
-        require('mason').setup({
+        local mason_tool_installer = require("mason-tool-installer")
 
-        })
-        require('mason-tool-installer').setup({
-            -- Install these linters, formatters, debuggers automatically
-            ensure_installed = {
-                'pylint'
+        -- enable mason and configure icons
+        mason.setup({
+            ui = {
+                icons = {
+                    package_installed = "✓",
+                    package_pending = "➜",
+                    package_uninstalled = "✗",
+                },
             },
         })
 
-
-        require('mason-lspconfig').setup({
+        mason_lspconfig.setup({
+            -- list of servers for mason to install
             ensure_installed = {
-                'tsserver',
-                'rust_analyzer',
-                'pylsp',
-                'eslint',
-                'gopls',
+                "rust_analyzer",
+                "tsserver",
+                "html",
+                "cssls",
+                "tailwindcss",
+                "lua_ls",
+                "emmet_ls",
+                "pylsp",
+                "gopls",
                 'sqlls',
-                'lua_ls',
                 'bashls',
                 'marksman',
-                'html',
-                'cssls'
             },
             handlers = {
                 function(server_name)
                     require('lspconfig')[server_name].setup({})
                 end,
-
+                -- this is the "custom handler" for `lua_ls`
                 lua_ls = function()
                     local lua_opts = lsp_zero.nvim_lua_ls()
                     require('lspconfig').lua_ls.setup(lua_opts)
                 end,
-                -- for better or worse pylsp work only you install manually every plugin
-                -- https://github.com/williamboman/mason-lspconfig.nvim/blob/main/lua/mason-lspconfig/server_configurations/pylsp/README.md
                 pylsp = function()
-                    local lsp = require('lsp-zero')
                     local venv_path = os.getenv('VIRTUAL_ENV')
                     local py_path = nil
                     -- decide which python executable to use for mypy
@@ -102,7 +90,7 @@ return {
                     else
                         py_path = vim.g.python3_host_prog
                     end
-                    lsp.configure('pylsp', {
+                    require('lspconfig').pylsp.setup({
                         settings = {
                             pylsp = {
                                 plugins = {
@@ -137,47 +125,18 @@ return {
                             },
                         },
                     })
-                    lsp.setup()
-                end
+                end,
             }
         })
 
-        -- Autocomplete
-        local cmp = require('cmp')
-        local cmp_select = { behavior = cmp.SelectBehavior.Select }
-        require('luasnip.loaders.from_vscode').lazy_load()
-
-        cmp.setup({
-            sources = {
-                { name = 'path' },
-                { name = 'nvim_lsp' },
-                { name = 'nvim_lua' },
-                { name = 'luasnip', keyword_length = 2 },
-                { name = 'buffer',  keyword_length = 3 },
+        mason_tool_installer.setup({
+            ensure_installed = {
+                "isort", -- python formatter
+                "black", -- python formatter
+                "pylint",
+                "eslint_d",
+                "goimports"
             },
-            formatting = lsp_zero.cmp_format(),
-
-            mapping = cmp.mapping.preset.insert({
-                ['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
-                ['<C-j>'] = cmp.mapping.select_next_item(cmp_select),
-                ['<CR>'] = cmp.mapping.confirm({ select = true }),
-                ['<C-Space>'] = cmp.mapping.complete(),
-            }),
         })
-
-        -- Autoformat
-        lsp_zero.format_on_save({
-            format_opts = {
-                async = false,
-                timeout_ms = 1000,
-            },
-            servers = {
-                ['tsserver']      = { 'javascript', 'typescript' },
-                ['rust_analyzer'] = { 'rust' },
-                ['gofmt']         = { 'go', 'golang' },
-                ['pylsp']         = { 'python' },
-                ['lua_ls']        = { 'lua' }
-            }
-        })
-    end
+    end,
 }

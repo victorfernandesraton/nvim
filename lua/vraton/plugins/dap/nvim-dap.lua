@@ -2,7 +2,7 @@
 return {
     -- https://github.com/rcarriga/nvim-dap-ui
     'rcarriga/nvim-dap-ui',
-    lazy = false,
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         -- https://github.com/mfussenegger/nvim-dap
         'mfussenegger/nvim-dap',
@@ -123,14 +123,13 @@ return {
             handlers = {
                 function(config)
                     -- all sources with no handler get passed here
-
                     -- Keep original functionality
                     require('mason-nvim-dap').default_setup(config)
                 end,
                 python = function(config)
                     require('mason-nvim-dap').default_setup(config) -- don't forget this!
 
-                    table.insert(dap.configurations.python, {
+                    table.insert(require('dap').configurations.python, {
                         type = 'python',
                         request = 'launch',
                         name = 'Run handler.py RPA',
@@ -139,7 +138,7 @@ return {
                         pythonPath = get_python_path()
                     })
 
-                    table.insert(dap.configurations.python, {
+                    table.insert(require('dap').configurations.python, {
                         name = "Pytest: Current File",
                         type = "python",
                         request = "launch",
@@ -152,7 +151,7 @@ return {
                     })
 
 
-                    table.insert(dap.configurations.python, {
+                    table.insert(require('dap').configurations.python, {
                         type = 'python',
                         request = 'launch',
                         name = 'DAP Django',
@@ -164,7 +163,7 @@ return {
                         pythonPath = get_python_path(),
                     })
 
-                    table.insert(dap.configurations.python, {
+                    table.insert(require('dap').configurations.python, {
                         type = 'python',
                         request = 'attach',
                         name = 'Attach remote',
@@ -187,7 +186,6 @@ return {
                 'delve',
             },
         }
-
 
 
 

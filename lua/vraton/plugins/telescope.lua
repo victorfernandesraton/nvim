@@ -1,6 +1,6 @@
 return {
     'nvim-telescope/telescope.nvim',
-    tag = '0.1.x',
+    tag = '0.1.5',
     dependencies = {
         "nvim-lua/plenary.nvim",
         { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -42,15 +42,11 @@ return {
         local keymap = vim.keymap -- for conciseness
 
         keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
-        keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
         keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
         keymap.set("n", "<leader>fc", "<cmd>Telescope grep_string<cr>", { desc = "Find string under cursor in cwd" })
         keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
         local builtin = require('telescope.builtin')
 
-        keymap.set('n', '<C-p>', builtin.find_files, { desc = "telescope find files" })
-        keymap.set('n', '<leader>gf', builtin.git_files, { desc = "telescope git files" })
-        keymap.set('n', '<leader>fg', builtin.live_grep, { desc = "telescope grep" })
         keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
         keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
         keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
