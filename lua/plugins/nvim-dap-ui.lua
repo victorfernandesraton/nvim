@@ -2,7 +2,6 @@
 return {
     -- https://github.com/rcarriga/nvim-dap-ui
     'rcarriga/nvim-dap-ui',
-    event = 'VeryLazy',
     dependencies = {
         -- https://github.com/mfussenegger/nvim-dap
         'mfussenegger/nvim-dap',
@@ -65,7 +64,6 @@ return {
             },
             {
                 elements = {
-                    "repl",
                     "console",
                 },
                 size = 10,
@@ -138,57 +136,64 @@ return {
                 -- Update this to ensure that you have the debuggers for the langs you want
                 'python',
                 'delve',
-                'debupy'
+                'debugpy'
             },
         }
 
 
         require("dap-go").setup()
-        table.insert(dap.configurations.python, {
-            type = 'python',
-            request = 'launch',
-            name = 'Run handler.py RPA',
-            program = 'handler.py',
-            console = "integratedTerminal",
-            pythonPath = get_python_path()
-        })
 
-        table.insert(dap.configurations.python, {
-            name = "Pytest: Current File",
-            type = "python",
-            request = "launch",
-            module = "pytest",
-            args = {
-                "${file}",
-                "-sv",
-                "--no-cov"
-            },
-            console = "integratedTerminal",
-        })
+        if dap.configurations ~= nil then
+            if dap.configurations.python ~= nil then
+                table.insert(dap.configurations.python, {
+                    type = 'python',
+                    request = 'launch',
+                    name = 'Run handler.py RPA',
+                    program = 'handler.py',
+                    console = "integratedTerminal",
+                    pythonPath = get_python_path()
+                })
+
+                table.insert(dap.configurations.python, {
+                    name = "Pytest: Current File",
+                    type = "python",
+                    request = "launch",
+                    module = "pytest",
+                    args = {
+                        "${file}",
+                        "-sv",
+                        "--no-cov"
+                    },
+                    console = "integratedTerminal",
+                    pythonPath = get_python_path()
+                })
 
 
-        table.insert(dap.configurations.python, {
-            type = 'python',
-            request = 'launch',
-            name = 'DAP Django',
-            program = vim.loop.cwd() .. '/manage.py',
-            args = { 'runserver', '--noreload' },
-            justMyCode = true,
-            django = true,
-            console = "integratedTerminal",
-        })
+                table.insert(dap.configurations.python, {
+                    type = 'python',
+                    request = 'launch',
+                    name = 'DAP Django',
+                    program = vim.loop.cwd() .. '/manage.py',
+                    args = { 'runserver', '--noreload' },
+                    justMyCode = true,
+                    django = true,
+                    console = "integratedTerminal",
+                    pythonPath = get_python_path()
+                })
 
-        table.insert(dap.configurations.python, {
-            type = 'python',
-            request = 'attach',
-            name = 'Attach remote',
-            connect = function()
-                return {
-                    host = '127.0.0.1',
-                    port = 5678
-                }
-            end,
-        })
+                table.insert(dap.configurations.python, {
+                    type = 'python',
+                    request = 'attach',
+                    name = 'Attach remote',
+                    connect = function()
+                        return {
+                            host = '127.0.0.1',
+                            port = 5678
+                        }
+                    end,
+                })
+            end
+        end
         local neotest = require("neotest")
         neotest.setup({
             adapters = {
@@ -197,9 +202,8 @@ return {
                     -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
                     dap = {
                         justMyCode = false,
-                        console = "integratedTerminal",
                     },
-                    args = { "--log-level", "DEBUG", "--quiet" },
+                    args = { "--log-level", "DEBUG" },
                     runner = "pytest",
                 }),
                 require("neotest-go")({})
@@ -259,6 +263,8 @@ return {
         keymap.set("n", '<leader>br', function() dap.clear_breakpoints() end, { desc = "DAP clear all breakpoints" })
         keymap.set("n", "<F5>", function() dap.continue() end, { desc = "DAP continue" })
 
+        keymap.set("n", "<leader>dt", function() dapui.toggle() end, { desc = "DAP toggle" })
+
         keymap.set("n", "<leader>dR", function() dap.restart() end, { desc = "DAP restart" })
         keymap.set("n", '<leader>ba', '<cmd>Telescope dap list_breakpoints<cr>', { desc = "DAP list breakpoint" })
         keymap.set("n", "<F6>", function() dap.step_over() end, { desc = "DAP step over" })
@@ -267,7 +273,7 @@ return {
         keymap.set("n", '<leader>dd', function()
             dap.disconnect(); dapui.close();
         end, { desc = "DAP disconnect" })
-        keymap.set("n", '<leader>dt', function()
+        keymap.set("n", '<leader>dT', function()
             dap.terminate(); dapui.close();
         end, { desc = "DAP terminate" })
         keymap.set("n", "<leader>dr", function() dap.repl.toggle() end, { desc = "DAP REPL toggle" })

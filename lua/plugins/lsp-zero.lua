@@ -44,33 +44,55 @@ return {
             vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
             vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
             vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-            vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+            vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
             vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
             vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
             vim.keymap.set('n', '<leader>=', function() vim.lsp.buf.format { async = true } end, opts)
             vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-            lsp_zero.buffer_autoformat()
         end)
 
         lsp_zero.on_attach(on_attach)
+        lsp_zero.buffer_autoformat()
         -- to learn how to use mason.nvim with lsp-zero
         -- read this: https://github.com/VonHeikemen/lsp-zero.nvim/blob/v3.x/doc/md/guides/integrate-with-mason-nvim.md
 
-        require('mason').setup({})
+        require('mason').setup({
+
+        })
         require('mason-tool-installer').setup({
             -- Install these linters, formatters, debuggers automatically
             ensure_installed = {
+                'delve',
                 'debugpy',
+                'pylint'
             },
         })
+
         require('mason-lspconfig').setup({
-            ensure_installed = { 'tsserver', 'rust_analyzer', 'pylsp', 'eslint', 'gopls', 'sqlls', 'lua_ls' },
+            ensure_installed = {
+                'tsserver',
+                'rust_analyzer',
+                'pylsp',
+                'eslint',
+                'gopls',
+                'sqlls',
+                'lua_ls',
+                'bashls',
+                'marksman',
+                'html',
+                'cssls'
+            },
             handlers = {
-                lsp_zero.default_setup,
+                function(server_name)
+                    require('lspconfig')[server_name].setup({})
+                end,
+
                 lua_ls = function()
                     local lua_opts = lsp_zero.nvim_lua_ls()
                     require('lspconfig').lua_ls.setup(lua_opts)
                 end,
+                -- for better or worse pylsp work only you install manually every plugin
+                -- https://github.com/williamboman/mason-lspconfig.nvim/blob/main/lua/mason-lspconfig/server_configurations/pylsp/README.md
                 pylsp = function()
                     local lsp = require('lsp-zero')
                     local venv_path = os.getenv('VIRTUAL_ENV')
@@ -90,7 +112,7 @@ return {
                                     autopep8 = { enabled = false },
                                     yapf = { enabled = false },
                                     -- linter options
-                                    pylint = { enabled = false, executable = "pylint" },
+                                    pylint = { enabled = true, executable = "pylint" },
                                     ruff = {
                                         -- formatter + Linter + isort
                                         enabled = true,
@@ -154,7 +176,8 @@ return {
                 ['tsserver']      = { 'javascript', 'typescript' },
                 ['rust_analyzer'] = { 'rust' },
                 ['gofmt']         = { 'go', 'golang' },
-                ['pylsp']         = { 'python' }
+                ['pylsp']         = { 'python' },
+                ['lua_ls']        = { 'lua' }
             }
         })
     end
