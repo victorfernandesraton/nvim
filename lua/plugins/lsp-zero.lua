@@ -62,11 +62,10 @@ return {
         require('mason-tool-installer').setup({
             -- Install these linters, formatters, debuggers automatically
             ensure_installed = {
-                'delve',
-                'debugpy',
                 'pylint'
             },
         })
+
 
         require('mason-lspconfig').setup({
             ensure_installed = {

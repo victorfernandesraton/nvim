@@ -2,22 +2,22 @@
 return {
     -- https://github.com/rcarriga/nvim-dap-ui
     'rcarriga/nvim-dap-ui',
+    lazy = false,
     dependencies = {
         -- https://github.com/mfussenegger/nvim-dap
         'mfussenegger/nvim-dap',
+
+        'williamboman/mason.nvim',
+
         -- https://github.com/theHamsta/nvim-dap-virtual-text
         'theHamsta/nvim-dap-virtual-text',   -- inline variable text while debugging
         -- https://github.com/nvim-telescope/telescope-dap.nvim
         'nvim-telescope/telescope-dap.nvim', -- telescope integration with dap
         "jay-babu/mason-nvim-dap.nvim",
-        -- python
-        'mfussenegger/nvim-dap-python',
-        "nvim-neotest/neotest",
-        "nvim-neotest/neotest-python",
         -- golang
         "leoluz/nvim-dap-go",
-        "nvim-neotest/neotest-go",
-        "nvim-neotest/nvim-nio",
+        -- python
+        'mfussenegger/nvim-dap-python',
         -- js
         "mxsdev/nvim-dap-vscode-js",
     },
@@ -84,6 +84,9 @@ return {
         }
     },
     config = function(_, opts)
+        local dap = require('dap')
+        local dapui = require('dapui')
+
         local is_windows = function()
             return vim.fn.has("win32") == 1
         end
@@ -108,14 +111,6 @@ return {
                 return venv_path .. '/bin/python'
             end
         end
-
-        local dap = require('dap')
-        local dapui = require('dapui')
-
-        -- require('dap').defaults.fallback.exception_breakpoints = {"raised", "uncaught"}
-        -- dap.defaults.fallback.exception_breakpoints = {'raised'}
-        -- dap.exception_breakpoints = { "Notice", "Warning", "Error", "Exception" }
-
         require('mason-nvim-dap').setup {
             -- Makes a best effort to setup the various debuggers with
             -- reasonable debug configurations
@@ -126,7 +121,61 @@ return {
             -- You can provide additional configuration to the handlers,
             -- see mason-nvim-dap README for more information
             handlers = {
+                function(config)
+                    -- all sources with no handler get passed here
 
+                    -- Keep original functionality
+                    require('mason-nvim-dap').default_setup(config)
+                end,
+                python = function(config)
+                    require('mason-nvim-dap').default_setup(config) -- don't forget this!
+
+                    table.insert(dap.configurations.python, {
+                        type = 'python',
+                        request = 'launch',
+                        name = 'Run handler.py RPA',
+                        program = 'handler.py',
+                        console = "integratedTerminal",
+                        pythonPath = get_python_path()
+                    })
+
+                    table.insert(dap.configurations.python, {
+                        name = "Pytest: Current File",
+                        type = "python",
+                        request = "launch",
+                        module = "pytest",
+                        args = {
+                            "${file}",
+                        },
+                        pythonPath = get_python_path(),
+                        console = "integratedTerminal",
+                    })
+
+
+                    table.insert(dap.configurations.python, {
+                        type = 'python',
+                        request = 'launch',
+                        name = 'DAP Django',
+                        program = vim.loop.cwd() .. '/manage.py',
+                        args = { 'runserver', '--noreload' },
+                        justMyCode = true,
+                        django = true,
+                        console = "integratedTerminal",
+                        pythonPath = get_python_path(),
+                    })
+
+                    table.insert(dap.configurations.python, {
+                        type = 'python',
+                        request = 'attach',
+                        name = 'Attach remote',
+                        connect = function()
+                            return {
+                                host = '127.0.0.1',
+                                port = 5678
+                            }
+                        end,
+                    })
+                end,
             },
 
 
@@ -136,88 +185,24 @@ return {
                 -- Update this to ensure that you have the debuggers for the langs you want
                 'python',
                 'delve',
-                'debugpy'
             },
         }
 
 
+
+
+
         require("dap-go").setup()
 
-        if dap.configurations ~= nil then
-            if dap.configurations.python ~= nil then
-                table.insert(dap.configurations.python, {
-                    type = 'python',
-                    request = 'launch',
-                    name = 'Run handler.py RPA',
-                    program = 'handler.py',
-                    console = "integratedTerminal",
-                    pythonPath = get_python_path()
-                })
-
-                table.insert(dap.configurations.python, {
-                    name = "Pytest: Current File",
-                    type = "python",
-                    request = "launch",
-                    module = "pytest",
-                    args = {
-                        "${file}",
-                        "-sv",
-                        "--no-cov"
-                    },
-                    console = "integratedTerminal",
-                    pythonPath = get_python_path()
-                })
-
-
-                table.insert(dap.configurations.python, {
-                    type = 'python',
-                    request = 'launch',
-                    name = 'DAP Django',
-                    program = vim.loop.cwd() .. '/manage.py',
-                    args = { 'runserver', '--noreload' },
-                    justMyCode = true,
-                    django = true,
-                    console = "integratedTerminal",
-                    pythonPath = get_python_path()
-                })
-
-                table.insert(dap.configurations.python, {
-                    type = 'python',
-                    request = 'attach',
-                    name = 'Attach remote',
-                    connect = function()
-                        return {
-                            host = '127.0.0.1',
-                            port = 5678
-                        }
-                    end,
-                })
-            end
-        end
-        local neotest = require("neotest")
-        neotest.setup({
-            adapters = {
-                require("neotest-python")({
-                    -- Extra arguments for nvim-dap configuration
-                    -- See https://github.com/microsoft/debugpy/wiki/Debug-configuration-settings for values
-                    dap = {
-                        justMyCode = false,
-                    },
-                    args = { "--log-level", "DEBUG" },
-                    runner = "pytest",
-                }),
-                require("neotest-go")({})
-            }
-        })
         local dap_vscode_js = require("dap-vscode-js")
         dap_vscode_js.setup({
-            -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
-            -- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
-            -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
-            adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' }, -- which adapters to register in nvim-dap
-            -- log_file_path = "(stdpath cache)/dap_vscode_js.log" -- Path for file logging
-            -- log_file_level = false -- Logging level for output to file. Set to false to disable file logging.
-            -- log_console_level = vim.log.levels.ERROR -- Logging level for output to console. Set to false to disable console output.
+            adapters = {
+                'pwa-node',
+                'pwa-chrome',
+                'pwa-msedge',
+                'node-terminal',
+                'pwa-extensionHost'
+            }, -- which adapters to register in nvim-dap
         })
 
         for _, language in ipairs({ "typescript", "javascript" }) do
@@ -288,17 +273,6 @@ return {
         keymap.set("n", '<leader>dh', '<cmd>Telescope dap commands<cr>')
         keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({ default_text = ":E:" }) end)
 
-        keymap.set("n", "<leader>tm", function() neotest.run.run() end, { desc = "Neotest: Test Method" })
-        keymap.set("n", "<leader>tM", function() neotest.run.run({ strategy = 'dap' }) end,
-            { desc = "Test Method DAP" })
-        keymap.set("n", "<leader>tf", function() neotest.run.run({ vim.fn.expand('%') }) end,
-            { desc = "Neotest: Test Class" })
-        keymap.set("n", "<leader>tF", function() neotest.run.run({ vim.fn.expand('%'), strategy = 'dap' }) end,
-            { desc = "Neotest: Test Class DAP" })
-        keymap.set("n", "<leader>tS", function() neotest.summary.toggle() end, {
-            desc =
-            "Neotest: Test Summary"
-        })
 
 
         dapui.setup(opts)
