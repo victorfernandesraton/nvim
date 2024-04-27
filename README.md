@@ -3,6 +3,7 @@
 Based on ThePrimeagen video and adapted for python devs
 - [Neovim Starter Kit for Python - Nerd Signals](https://www.youtube.com/watch?v=jWZ_JeLgDxU)
 - [0 to LSP : Neovim RC From Scratch](https://www.youtube.com/watch?v=w7i4amO_zaE)
+- [How I Setup Neovim To Make It AMAZING in 2024: The Ultimate Guide -  Josean Martinez](https://yewtu.be/watch?v=6pAG3BHurdM&listen=false)
 
 ## Prerequisites
 - Fonts:
