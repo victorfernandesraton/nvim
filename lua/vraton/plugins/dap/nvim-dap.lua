@@ -63,6 +63,7 @@ return {
             {
                 elements = {
                     "console",
+                    "repl"
                 },
                 size = 10,
                 position = "bottom", -- Can be "bottom" or "top"
