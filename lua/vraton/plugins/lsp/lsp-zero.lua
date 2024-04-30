@@ -30,8 +30,8 @@ return {
             vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
             vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
             vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
-            vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
-            vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+            vim.keymap.set("n", "<leader>rr", function() vim.lsp.buf.references() end, opts)
+            vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
             vim.keymap.set('n', '<leader>=', function() vim.lsp.buf.format { async = true } end, opts)
             vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
         end)
@@ -42,7 +42,6 @@ return {
         lsp_zero.buffer_autoformat()
         -- import mason
         local mason = require("mason")
-
         local mason_tool_installer = require("mason-tool-installer")
 
         -- enable mason and configure icons
@@ -66,7 +65,7 @@ return {
                 "tailwindcss",
                 "lua_ls",
                 "emmet_ls",
-                "pylsp",
+                "pyright",
                 "gopls",
                 'sqlls',
                 'bashls',
@@ -90,38 +89,11 @@ return {
                     else
                         py_path = vim.g.python3_host_prog
                     end
-                    require('lspconfig').pylsp.setup({
+                    require('lspconfig').pyright.setup({
+                        disableOrganizeImports = true,
                         settings = {
-                            pylsp = {
-                                plugins = {
-                                    -- formatter options
-                                    black = { enabled = false },
-                                    autopep8 = { enabled = false },
-                                    yapf = { enabled = false },
-                                    -- linter options
-                                    pylint = { enabled = true, executable = "pylint" },
-                                    ruff = {
-                                        -- formatter + Linter + isort
-                                        enabled = true,
-                                        extendSelect = { "I" },
-                                        targetVersion = "py38", -- The minimum python version to target (applies for both linting and formatting).
-                                        format = { "I" },       -- Rules that are marked as fixable by ruff that should be fixed when running textDocument/formatting
-                                    },
-                                    pyflakes = { enabled = false },
-                                    pycodestyle = { enabled = false },
-                                    -- type checker
-                                    pylsp_mypy = {
-                                        enabled = true,
-                                        report_progress = true,
-                                        overrides = { "--python-executable", py_path, true },
-                                        live_mode = true
-                                    },
-                                    -- auto-completion options
-                                    jedi_completion = { fuzzy = true },
-                                    rope_autoimport = { enabled = false },
-                                    -- import sorting
-                                    isort = { enabled = false },
-                                },
+                            python = {
+                                venvPath = py_path,
                             },
                         },
                     })
