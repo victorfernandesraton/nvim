@@ -8,6 +8,5 @@ return {
         })
         local color = "rose-pine"
         vim.cmd.colorscheme(color)
-        ColorMyPencils()
     end
 }

@@ -5,6 +5,7 @@ return {
         vim.keymap.set("n", "<leader>gpp", ":G push<CR>")
         vim.keymap.set("n", "<leader>gff", ":G fetch<CR>")
         vim.keymap.set("n", "<leader>gll", ":G pull<CR>")
-        vim.keymap.set("n", "<leader>gtt", ":G log --oneline --graph --all --decorate<CR>", { desc = "Fugitive: git tree" })
+        vim.keymap.set("n", "<leader>gtt", ":G log --oneline --graph --all --decorate<CR>",
+            { desc = "Fugitive: git tree" })
     end
 }
