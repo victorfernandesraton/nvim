@@ -21,6 +21,7 @@ Based on ThePrimeagen video and adapted for python devs
 - [ripgrep](https://github.com/BurntSushi/ripgrep) - Needed for Telescope Fuzzy Finder
 - [xclip](https://linuxconfig.org/how-to-use-xclip-on-linux) - Needed for system clipboard support
 - [Python](https://www.python.org/) - Version 3.8 or later
+- [FZF for telescope things](https://github.com/junegunn/fzf)
 
 ## Getting start
 
@@ -35,5 +36,10 @@ ln -s $(pwd) ~/.config/nvim
 3. Open neovim in your CLI and await for mason and lazy due your magic 
 4. Inside neovim using command to Install pylsp dependencies using `:PylspInstall <package-name>`
 ```bash
-:PylspInstall pyls-isort pylsp-mypy python-lsp-black
+:PylspInstall pylsp-mypy
 ```
+
+## Troubleshoting
+- Some error in fzf:
+telescope and fzf may not have installed correctly, using make in ❯ ~/.local/share/nvim/lazy/telescope-fzf-native.nvim/ to build these native plugin
+
