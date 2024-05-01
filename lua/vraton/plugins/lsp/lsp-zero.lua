@@ -3,11 +3,7 @@ return {
     branch = 'v3.x',
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-        "williamboman/mason-lspconfig.nvim",
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-
-        { 'williamboman/mason.nvim' },
-
+        { "williamboman/mason-lspconfig.nvim" },
         { "rafamadriz/friendly-snippets" },
         {
             'neovim/nvim-lspconfig',
@@ -24,7 +20,8 @@ return {
             local opts = { buffer = bufnr, remap = false }
 
             vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-            vim.keymap.set("n", "<leader>vh", function() vim.lsp.buf.hover() end, opts)
+            vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
+            vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
             vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
             vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
             vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
@@ -36,25 +33,11 @@ return {
             vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
         end)
 
-        local mason_lspconfig = require("mason-lspconfig")
 
         lsp_zero.on_attach(on_attach)
         lsp_zero.buffer_autoformat()
-        -- import mason
-        local mason = require("mason")
-        local mason_tool_installer = require("mason-tool-installer")
 
-        -- enable mason and configure icons
-        mason.setup({
-            ui = {
-                icons = {
-                    package_installed = "✓",
-                    package_pending = "➜",
-                    package_uninstalled = "✗",
-                },
-            },
-        })
-
+        local mason_lspconfig = require("mason-lspconfig")
         mason_lspconfig.setup({
             -- list of servers for mason to install
             ensure_installed = {
@@ -65,7 +48,7 @@ return {
                 "tailwindcss",
                 "lua_ls",
                 "emmet_ls",
-                "pyright",
+                "pylsp",
                 "gopls",
                 'sqlls',
                 'bashls',
@@ -89,26 +72,35 @@ return {
                     else
                         py_path = vim.g.python3_host_prog
                     end
-                    require('lspconfig').pyright.setup({
-                        disableOrganizeImports = true,
+                    require('lspconfig').pylsp.setup({
                         settings = {
-                            python = {
-                                venvPath = py_path,
+                            pylsp = {
+                                plugins = {
+                                    -- formatter options: see by conform.nvim
+                                    black = { enabled = false },
+                                    autopep8 = { enabled = false },
+                                    yapf = { enabled = false },
+                                    -- linter options
+                                    pylint = { enabled = true, executable = "pylint" },
+                                    pyflakes = { enabled = false },
+                                    pycodestyle = { enabled = false },
+                                    -- type checker
+                                    pylsp_mypy = {
+                                        enabled = true,
+                                        overrides = { "--python-executable", py_path, true },
+                                        report_progress = true,
+                                        live_mode = false
+                                    },
+                                    -- auto-completion options
+                                    jedi_completion = { fuzzy = true },
+                                    -- import sorting
+                                    pyls_isort = { enabled = false },
+                                },
                             },
                         },
                     })
                 end,
             }
-        })
-
-        mason_tool_installer.setup({
-            ensure_installed = {
-                "isort", -- python formatter
-                "black", -- python formatter
-                "pylint",
-                "eslint_d",
-                "goimports"
-            },
         })
     end,
 }
