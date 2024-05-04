@@ -8,7 +8,6 @@ return {
             formatters_by_ft = {
                 go = { "goimports", "gopls" },
                 lua = { "stylua" },
-                python = { "isort", "black" },
             },
             format_on_save = {
                 lsp_fallback = true,

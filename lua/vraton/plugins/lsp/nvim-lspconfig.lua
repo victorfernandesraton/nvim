@@ -1,44 +1,32 @@
 return {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v3.x',
+
+    'neovim/nvim-lspconfig',
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         { "williamboman/mason-lspconfig.nvim" },
         { "rafamadriz/friendly-snippets" },
-        {
-            'neovim/nvim-lspconfig',
-            dependencies = {
-                { 'hrsh7th/cmp-nvim-lsp' },
-            }
-        },
+        { 'hrsh7th/cmp-nvim-lsp' },
     },
     config = function()
-        local lsp_zero = require('lsp-zero')
-
         -- my shotcuts
-        local on_attach = (function(_, bufnr)
-            local opts = { buffer = bufnr, remap = false }
+        vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end)
+        vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end)
+        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end)
+        vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end)
+        vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end)
+        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end)
+        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end)
+        vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end)
+        vim.keymap.set("n", "<leader>rr", function() vim.lsp.buf.references() end)
+        vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end)
+        vim.keymap.set('n', '<leader>=', function() vim.lsp.buf.format { async = true } end)
+        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
 
-            vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-            vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
-            vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-            vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-            vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-            vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-            vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-            vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
-            vim.keymap.set("n", "<leader>rr", function() vim.lsp.buf.references() end, opts)
-            vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
-            vim.keymap.set('n', '<leader>=', function() vim.lsp.buf.format { async = true } end, opts)
-            vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-        end)
-
-
-        lsp_zero.on_attach(on_attach)
-        lsp_zero.buffer_autoformat()
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
         local mason_lspconfig = require("mason-lspconfig")
         mason_lspconfig.setup({
+            auto_start = true,
             -- list of servers for mason to install
             ensure_installed = {
                 "rust_analyzer",
@@ -60,8 +48,9 @@ return {
                 end,
                 -- this is the "custom handler" for `lua_ls`
                 lua_ls = function()
-                    local lua_opts = lsp_zero.nvim_lua_ls()
-                    require('lspconfig').lua_ls.setup(lua_opts)
+                    require("lspconfig").lua_ls.setup({
+                        capabilities = capabilities
+                    })
                 end,
                 pylsp = function()
                     local venv_path = os.getenv('VIRTUAL_ENV')
@@ -77,7 +66,7 @@ return {
                             pylsp = {
                                 plugins = {
                                     -- formatter options: see by conform.nvim
-                                    black = { enabled = false },
+                                    black = { enabled = true },
                                     autopep8 = { enabled = false },
                                     yapf = { enabled = false },
                                     -- linter options
@@ -95,7 +84,7 @@ return {
                                     -- auto-completion options
                                     jedi_completion = { fuzzy = true },
                                     -- import sorting
-                                    pyls_isort = { enabled = false },
+                                    pyls_isort = { enabled = true },
                                 },
                             },
                         },

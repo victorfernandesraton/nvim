@@ -14,16 +14,25 @@ return {
         "saadparwaiz1/cmp_luasnip",     -- for autocompletion
         "rafamadriz/friendly-snippets", -- useful snippets
         "onsails/lspkind.nvim",         -- vs-code like pictograms
+        "hrsh7th/cmp-nvim-lsp"
+
     },
     config = function()
         -- Autocomplete
         local cmp = require('cmp')
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
-        local lsp_zero = require('lsp-zero')
         require('luasnip.loaders.from_vscode').lazy_load()
 
         cmp.setup({
-            formatting = lsp_zero.cmp_format(),
+            snippet = {
+                expand = function(args)
+                    require("luasnip").lsp_expand(args.body)
+                end,
+            },
+            window = {
+                completion = cmp.config.window.bordered(),
+                documentation = cmp.config.window.bordered(),
+            },
             mapping = cmp.mapping.preset.insert({
                 ['<C-k>'] = cmp.mapping.select_prev_item(cmp_select),
                 ['<C-j>'] = cmp.mapping.select_next_item(cmp_select),

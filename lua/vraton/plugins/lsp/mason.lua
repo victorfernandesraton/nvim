@@ -11,8 +11,6 @@ return {
         mason.setup({})
         mason_tool_installer.setup({
             ensure_installed = {
-                "isort", -- python formatter
-                "black", -- python formatter
                 "pylint",
                 "eslint_d",
                 "goimports"
