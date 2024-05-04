@@ -49,7 +49,14 @@ return {
                 -- this is the "custom handler" for `lua_ls`
                 lua_ls = function()
                     require("lspconfig").lua_ls.setup({
-                        capabilities = capabilities
+                        capabilities = capabilities,
+                        settings = {
+                            Lua = {
+                                diagnostics = {
+                                    globals = { 'vim' }
+                                }
+                            }
+                        },
                     })
                 end,
                 pylsp = function()

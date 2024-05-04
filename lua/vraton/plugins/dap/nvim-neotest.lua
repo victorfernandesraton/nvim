@@ -8,6 +8,8 @@ return {
         "nvim-treesitter/nvim-treesitter",
         "nvim-neotest/neotest-python",
         "nvim-neotest/neotest-go",
+        'nvim-neotest/neotest-jest',
+
     },
     config = function()
         local keymap = vim.keymap
@@ -24,7 +26,15 @@ return {
                     args = { "--log-level", "DEBUG" },
                     runner = "pytest",
                 }),
-                require("neotest-go")({})
+                require("neotest-go")({}),
+                require('neotest-jest')({
+                    jestCommand = "npm test --",
+                    jest_test_discovery = false,
+                    env = { CI = true },
+                    cwd = function(path)
+                        return vim.fn.getcwd()
+                    end,
+                }),
             }
         })
 
