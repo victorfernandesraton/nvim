@@ -73,7 +73,7 @@ return {
                             pylsp = {
                                 plugins = {
                                     -- formatter options: see by conform.nvim
-                                    black = { enabled = true },
+                                    black = { enabled = false },
                                     autopep8 = { enabled = false },
                                     yapf = { enabled = false },
                                     -- linter options
@@ -91,7 +91,7 @@ return {
                                     -- auto-completion options
                                     jedi_completion = { fuzzy = true },
                                     -- import sorting
-                                    pyls_isort = { enabled = true },
+                                    pyls_isort = { enabled = false },
                                 },
                             },
                         },
