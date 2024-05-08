@@ -13,7 +13,8 @@ return {
             ensure_installed = {
                 "pylint",
                 "eslint_d",
-                "goimports"
+                "goimports",
+                "mypy"
             },
         })
     end

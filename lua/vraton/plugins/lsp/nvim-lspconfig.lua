@@ -83,7 +83,7 @@ return {
                                     pycodestyle = { enabled = false },
                                     -- type checker
                                     pylsp_mypy = {
-                                        enabled = true,
+                                        enabled = false,
                                         overrides = { "--python-executable", py_path, true },
                                         report_progress = true,
                                         live_mode = false
