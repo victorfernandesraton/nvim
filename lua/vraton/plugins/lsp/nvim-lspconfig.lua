@@ -19,7 +19,6 @@ return {
         vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end)
         vim.keymap.set("n", "<leader>rr", function() vim.lsp.buf.references() end)
         vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end)
-        vim.keymap.set('n', '<leader>=', function() vim.lsp.buf.format { async = true } end)
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration)
 
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
