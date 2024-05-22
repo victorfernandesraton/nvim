@@ -22,6 +22,8 @@ Based on ThePrimeagen video and adapted for python devs
 - [xclip](https://linuxconfig.org/how-to-use-xclip-on-linux) - Needed for system clipboard support
 - [Python](https://www.python.org/) - Version 3.8 or later
 - [FZF for telescope things](https://github.com/junegunn/fzf)
+- [Clang compiler (if you using debian or ubuntu)](https://packages.debian.org/bookworm/clang)
+- [Rust compiler](https://www.rust-lang.org)
 
 ## Getting start
 
