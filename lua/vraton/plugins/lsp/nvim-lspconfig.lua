@@ -40,6 +40,7 @@ return {
                 'sqlls',
                 'bashls',
                 'marksman',
+                "elixirls"
             },
             handlers = {
                 function(server_name)

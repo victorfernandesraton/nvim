@@ -1,22 +1,17 @@
 return {
     "mistricky/codesnap.nvim",
     build = "make build_generator",
+    keys = {
+        { "<leader>cc", ":CodeSnap<CR>",     mode = "x", desc = "Save selected code snapshot into clipboard" },
+        { "<leader>cs", ":CodeSnapSave<CR>", mode = "x", desc = "Save selected code snapshot in ~/Pictures" },
+    },
     config = function()
         require("codesnap").setup({
+            save_path = "~/Pictures",
+            has_breadcrumbs = true,
             watermark = "",
-            breadcrumbs_separator = "/",
-            has_breadcrumbs = false,
-            has_line_number = false,
-            min_width = 0,
-            code_font_family = "MesloLGS NF",
-
+            bg_color = "#535c68",
+            title = "vraton.dev from CodeSnap.nvim",
         })
-
-        vim.keymap.set("n", "<leader>vc", ":CarbonNow<CR>", { desc = "Carbon all file" })
-        vim.keymap.set("v", "<leader>vc", "' :CarbonNow<CR>", { desc = "Carbon selected file" })
-    end,
-    keys = {
-        { "<leader>cc", "<cmd>CodeSnap<cr>",     mode = "x", desc = "Save selected code snapshot into clipboard" },
-        { "<leader>cs", "<cmd>CodeSnapSave<cr>", mode = "x", desc = "Save selected code snapshot in ~/Pictures" },
-    },
+    end
 }
