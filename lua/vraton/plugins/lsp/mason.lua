@@ -8,7 +8,12 @@ return {
         local mason = require("mason")
         local mason_tool_installer = require("mason-tool-installer")
         -- enable mason and configure icons
-        mason.setup({})
+        mason.setup({
+            ensure_installed = {
+                "black",
+                "isort"
+            }
+        })
         mason_tool_installer.setup({
             ensure_installed = {
                 "pylint",
