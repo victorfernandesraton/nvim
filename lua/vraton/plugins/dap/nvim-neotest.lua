@@ -1,6 +1,6 @@
 return {
     "nvim-neotest/neotest",
-    event = "VeryLazy",
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         "nvim-neotest/nvim-nio",
         "nvim-lua/plenary.nvim",
@@ -9,13 +9,24 @@ return {
         "nvim-neotest/neotest-python",
         "nvim-neotest/neotest-go",
         'nvim-neotest/neotest-jest',
+        "fredrikaverpil/neotest-golang", -- Installation
 
     },
     config = function()
         local keymap = vim.keymap
 
         local neotest = require("neotest")
-        neotest.setup({
+        local neotest_ns = vim.api.nvim_create_namespace("neotest")
+        vim.diagnostic.config({
+            virtual_text = {
+                format = function(diagnostic)
+                    local message =
+                        diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
+                    return message
+                end,
+            },
+        }, neotest_ns)
+        require("neotest").setup({
             adapters = {
                 require("neotest-python")({
                     -- Extra arguments for nvim-dap configuration
@@ -26,12 +37,12 @@ return {
                     args = { "--log-level", "DEBUG" },
                     runner = "pytest",
                 }),
-                require("neotest-go")({}),
+                require("neotest-go"), -- Registration
                 require('neotest-jest')({
                     jestCommand = "npm test --",
                     jest_test_discovery = false,
                     env = { CI = true },
-                    cwd = function(path)
+                    cwd = function(_)
                         return vim.fn.getcwd()
                     end,
                 }),
@@ -49,5 +60,8 @@ return {
             desc =
             "Neotest: Test Summary"
         })
+        keymap.set("n", "<leader>tp", function()
+            neotest.output_panel.toggle()
+        end)
     end
 }

@@ -11,7 +11,7 @@ return {
         mason.setup({
             ensure_installed = {
                 "black",
-                "isort"
+                "isort",
             }
         })
         mason_tool_installer.setup({
@@ -19,6 +19,7 @@ return {
                 "pylint",
                 "eslint_d",
                 "goimports",
+                "golines",
                 "mypy"
             },
         })

@@ -24,6 +24,7 @@ return {
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
         local mason_lspconfig = require("mason-lspconfig")
+        local lspconfig = require("lspconfig")
         mason_lspconfig.setup({
             auto_start = true,
             -- list of servers for mason to install
@@ -44,7 +45,7 @@ return {
             },
             handlers = {
                 function(server_name)
-                    require('lspconfig')[server_name].setup({})
+                    lspconfig[server_name].setup({})
                 end,
                 -- this is the "custom handler" for `lua_ls`
                 lua_ls = function()
@@ -59,6 +60,21 @@ return {
                         },
                     })
                 end,
+                gopls = function()
+                    require("lspconfig").gopls.setup {
+                        cmd = { "gopls" },
+                        filetypes = { "go", "gomod", "gowork", "gotmpl" },
+                        settings = {
+                            gopls = {
+                                completeUnimported = true,
+                                usePlaceholders = true,
+                                analyses = {
+                                    unusedparams = true,
+                                },
+                            },
+                        },
+                    }
+                end,
                 pylsp = function()
                     local venv_path = os.getenv('VIRTUAL_ENV')
                     local py_path = nil
@@ -68,6 +84,8 @@ return {
                     else
                         py_path = vim.g.python3_host_prog
                     end
+
+
                     require('lspconfig').pylsp.setup({
                         settings = {
                             pylsp = {

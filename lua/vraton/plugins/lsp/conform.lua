@@ -6,7 +6,7 @@ return {
 
         conform.setup({
             formatters_by_ft = {
-                go = { "goimports", "gopls" },
+                go = { "goimports", "gofmt" },
                 lua = { "stylua" },
                 python = { "isort", "black" },
                 elixir = { "elixirls" }

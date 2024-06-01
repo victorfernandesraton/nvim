@@ -84,6 +84,11 @@ return {
     config = function(_, opts)
         local dap = require('dap')
         local dapui = require('dapui')
+        require('dap-go').setup({
+            external_config = {
+                enabled = true,
+            }
+        })
 
         local is_windows = function()
             return vim.fn.has("win32") == 1
@@ -132,7 +137,6 @@ return {
             ensure_installed = {
                 -- Update this to ensure that you have the debuggers for the langs you want
                 'python',
-                'delve',
             },
         }
 
