@@ -36,7 +36,7 @@ return {
                 "tailwindcss",
                 "lua_ls",
                 "emmet_ls",
-                "pylsp",
+                "ruff_lsp",
                 "gopls",
                 'sqlls',
                 'bashls',
@@ -75,45 +75,15 @@ return {
                         },
                     }
                 end,
-                pylsp = function()
-                    local venv_path = os.getenv('VIRTUAL_ENV')
-                    local py_path = nil
-                    -- decide which python executable to use for mypy
-                    if venv_path ~= nil then
-                        py_path = venv_path .. "/bin/python3"
-                    else
-                        py_path = vim.g.python3_host_prog
-                    end
-
-
-                    require('lspconfig').pylsp.setup({
-                        settings = {
-                            pylsp = {
-                                plugins = {
-                                    -- formatter options: see by conform.nvim
-                                    black = { enabled = false },
-                                    autopep8 = { enabled = false },
-                                    yapf = { enabled = false },
-                                    -- linter options
-                                    pylint = { enabled = false, executable = "pylint" },
-
-                                    pyflakes = { enabled = false },
-                                    pycodestyle = { enabled = false },
-                                    -- type checker
-                                    pylsp_mypy = {
-                                        enabled = false,
-                                        overrides = { "--python-executable", py_path, true },
-                                        report_progress = true,
-                                        live_mode = false
-                                    },
-                                    -- auto-completion options
-                                    jedi_completion = { fuzzy = true },
-                                    -- import sorting
-                                    pyls_isort = { enabled = false },
-                                },
-                            },
-                        },
-                    })
+                ruff_lsp = function()
+                    require('lspconfig').ruff_lsp.setup {
+                        init_options = {
+                            settings = {
+                                -- Any extra CLI arguments for `ruff` go here.
+                                args = {},
+                            }
+                        }
+                    }
                 end,
             }
         })
