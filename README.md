@@ -36,10 +36,6 @@ ln -s $(pwd) ~/.config/nvim
 ```
 
 3. Open neovim in your CLI and await for mason and lazy due your magic 
-4. Inside neovim using command to Install pylsp dependencies using `:PylspInstall <package-name>`
-```bash
-:PylspInstall pylsp-mypy
-```
 
 ## Troubleshoting
 - Some error in fzf:
