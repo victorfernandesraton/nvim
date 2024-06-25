@@ -16,10 +16,12 @@ return {
         })
         mason_tool_installer.setup({
             ensure_installed = {
+                "ruff",
                 "pylint",
-                "eslint_d",
+                "standardjs",
                 "goimports",
                 "golines",
+                "golangci-lint",
                 "mypy"
             },
         })

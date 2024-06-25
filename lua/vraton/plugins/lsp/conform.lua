@@ -9,7 +9,11 @@ return {
                 go = { "goimports", "gofmt" },
                 lua = { "stylua" },
                 python = { "ruff_fix", "ruff_format" },
-                elixir = { "elixirls" }
+                elixir = { "elixirls" },
+                javascript = { "standardjs" },
+                typescript = { "standardjs" },
+                javascriptreact = { "standardjs" },
+                typescriptreact = { "standardjs" }
             },
             format_on_save = {
                 lsp_fallback = true,
