@@ -10,8 +10,7 @@ return {
         -- enable mason and configure icons
         mason.setup({
             ensure_installed = {
-                "black",
-                "isort",
+
             }
         })
         mason_tool_installer.setup({

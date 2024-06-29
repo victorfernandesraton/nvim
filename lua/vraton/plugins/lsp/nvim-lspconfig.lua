@@ -36,7 +36,8 @@ return {
                 "tailwindcss",
                 "lua_ls",
                 "emmet_ls",
-                "ruff_lsp",
+                "ruff",
+                "pylsp",
                 "gopls",
                 'sqlls',
                 'bashls',
@@ -75,14 +76,29 @@ return {
                         },
                     }
                 end,
-                ruff_lsp = function()
-                    require('lspconfig').ruff_lsp.setup {
-                        init_options = {
-                            settings = {
-                                -- Any extra CLI arguments for `ruff` go here.
-                                args = {},
+                pylsp = function()
+                    require('lspconfig').pylsp.setup {
+                        settings = {
+                            pylsp = {
+                                plugins = {
+                                    black = { enabled = false },
+                                    autopep8 = { enabled = false },
+                                    yapf = { enabled = false },
+                                    ruff = { enabled = true },
+                                    pylint = { enabled = false, executable = "pylint" },
+                                    pyflakes = { enabled = false },
+                                    pycodestyle = { enabled = false },
+                                    -- type checker
+                                    pylsp_mypy = { enabled = false },
+                                    -- auto-completion options
+                                    jedi_completion = { fuzzy = true },
+                                    -- import sorting
+                                    pyls_isort = { enabled = false },
+
+                                }
                             }
                         }
+
                     }
                 end,
             }
