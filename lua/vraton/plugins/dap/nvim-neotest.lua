@@ -40,7 +40,7 @@ return {
                 require("neotest-go"), -- Registration
                 require('neotest-jest')({
                     jestCommand = "npm test --",
-                    jest_test_discovery = false,
+                    jest_test_discovery = true,
                     env = { CI = true },
                     cwd = function(_)
                         return vim.fn.getcwd()
