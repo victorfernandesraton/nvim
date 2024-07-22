@@ -16,12 +16,12 @@ return {
                 typescriptreact = { "standardjs" }
             },
             format_on_save = {
-                lsp_fallback = true,
-                async = true,
+                lsp_format = "fallback",
                 timeout_ms = 1000,
             },
             format_after_save = {
                 lsp_format = "fallback",
+                async = true,
             },
         })
 
