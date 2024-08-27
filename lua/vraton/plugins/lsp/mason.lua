@@ -21,7 +21,9 @@ return {
                 "goimports",
                 "golines",
                 "golangci-lint",
-                "mypy"
+                "mypy",
+                "phpcs",
+                "phpcbf"
             },
         })
     end

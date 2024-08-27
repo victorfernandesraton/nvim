@@ -42,7 +42,8 @@ return {
                 'sqlls',
                 'bashls',
                 'marksman',
-                "elixirls"
+                "elixirls",
+                "phpactor",
             },
             handlers = {
                 function(server_name)

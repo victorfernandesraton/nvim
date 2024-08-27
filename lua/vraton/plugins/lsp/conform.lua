@@ -13,7 +13,8 @@ return {
                 javascript = { "standardjs" },
                 typescript = { "standardjs" },
                 javascriptreact = { "standardjs" },
-                typescriptreact = { "standardjs" }
+                typescriptreact = { "standardjs" },
+                php = { "phpcbf" }
             },
             format_on_save = {
                 lsp_format = "fallback",

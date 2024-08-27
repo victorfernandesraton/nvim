@@ -11,7 +11,8 @@ return {
             typescriptreact = { "standardjs" },
             svelte = { "standardjs" },
             python = { "ruff", "mypy" },
-            golang = { "golangci-lint" }
+            golang = { "golangci-lint" },
+            php = { "phpcs" }
         }
 
         local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
