@@ -17,7 +17,7 @@ Based on ThePrimeagen video and adapted for python devs
        https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf)
     - [Nerd Font](https://www.nerdfonts.com/) - Alternativwe to MesloLGS witch i use by default
 - [True Color Terminal](https://gist.github.com/kurahaupo/6ce0eaefe5e730841f03cb82b061daa2#now-supporting-true-color) - Make Neovim look pretty
-- [Neovim](https://neovim.io/) - Version 0.9 or later
+- [Neovim](https://neovim.io/) - Version 0.10 or later
 - [ripgrep](https://github.com/BurntSushi/ripgrep) - Needed for Telescope Fuzzy Finder
 - [xclip](https://linuxconfig.org/how-to-use-xclip-on-linux) - Needed for system clipboard support
 - [Python](https://www.python.org/) - Version 3.8 or later
@@ -27,6 +27,14 @@ Based on ThePrimeagen video and adapted for python devs
 
 ## Getting start
 
+Make sure you have a neovim 0.10 or later valid Instalation, using the command `nvim --version` and see if  the output looks like this:
+
+```bash
+NVIM v0.10.2-dev-34+g59d3d76b7
+Build type: RelWithDebInfo
+LuaJIT 2.1.1713484068
+Run "nvim -V1 -v" for more info
+```
 
 ### Instalation
 1. Clone this repop
