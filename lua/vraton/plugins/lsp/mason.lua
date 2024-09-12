@@ -18,12 +18,13 @@ return {
                 "ruff",
                 "pylint",
                 "standardjs",
+                "ts-standard",
                 "goimports",
                 "golines",
                 "golangci-lint",
                 "mypy",
                 "phpcs",
-                "phpcbf"
+                "phpcbf",
             },
         })
     end
