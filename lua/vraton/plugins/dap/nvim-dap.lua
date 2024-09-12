@@ -166,6 +166,19 @@ return {
             pythonPath = get_python_path(),
             console = "integratedTerminal",
         })
+        table.insert(require('dap').configurations.python, {
+            name = "Pytest: Querido diário spyder",
+            type = "python",
+            request = "launch",
+            module = "scrapy",
+            args = {
+                "crawl",
+                "${fileBasenameNoExtension}",
+            },
+            cwd = "${workspaceFolder}/data_collection",
+            pythonPath = get_python_path(),
+            console = "integratedTerminal",
+        })
 
         local keymap = vim.keymap
         -- dap keybinds
