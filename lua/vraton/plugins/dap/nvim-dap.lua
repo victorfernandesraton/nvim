@@ -133,8 +133,8 @@ return {
                     -- Keep original functionality
                     require('mason-nvim-dap').default_setup(config)
                 end,
-
             },
+
 
 
             -- You'll need to check that you have the required things installed
@@ -142,6 +142,7 @@ return {
             ensure_installed = {
                 -- Update this to ensure that you have the debuggers for the langs you want
                 'python',
+                'php'
 
             },
         }
@@ -179,6 +180,7 @@ return {
             pythonPath = get_python_path(),
             console = "integratedTerminal",
         })
+
 
         local keymap = vim.keymap
         -- dap keybinds
