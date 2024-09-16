@@ -23,8 +23,8 @@ return {
                 "golines",
                 "golangci-lint",
                 "mypy",
-                "phpcs",
                 "phpcbf",
+                "phpstan"
             },
         })
     end

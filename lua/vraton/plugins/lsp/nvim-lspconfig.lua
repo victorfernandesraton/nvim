@@ -43,7 +43,7 @@ return {
                 'bashls',
                 'marksman',
                 "elixirls",
-                "phpactor",
+                "intelephense",
 
 
             },

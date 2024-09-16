@@ -12,7 +12,7 @@ return {
             svelte = { "standardjs" },
             python = { "ruff", "mypy" },
             golang = { "golangci-lint" },
-            php = { "phpcs" }
+            php = { "phpstan" }
         }
 
         local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
