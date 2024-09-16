@@ -12,15 +12,12 @@ return {
     },
     {
         "tpope/vim-fugitive",
-        dependencies = {
-            "rbong/vim-flog",
-        },
         config = function()
             vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
             vim.keymap.set("n", "<leader>gpp", ":G push<CR>", { desc = "Fugitive: git push" })
             vim.keymap.set("n", "<leader>gff", ":G fetch<CR>", { desc = "Fugitive: git fetch" })
             vim.keymap.set("n", "<leader>gll", ":G pull<CR>", { desc = "Fugitive: git pull" })
-            vim.keymap.set("n", "<leader>gtt", ":Flog<CR>", { desc = "Fog: view git grapth" })
+            vim.keymap.set("n", "<leader>gtt", ":GcLog<CR>", { desc = "Fugitive: view git grapth" })
         end
     },
 }
