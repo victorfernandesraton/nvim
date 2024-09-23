@@ -11,7 +11,21 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup(
-    { { import = "vraton.plugins" }, { import = "vraton.plugins.lsp" }, { import = "vraton.plugins.dap" } }, {
+    {
+        {
+            import = "vraton.plugins"
+        },
+        {
+            import = "vraton.plugins.lsp"
+        },
+        {
+            import = "vraton.plugins.dap"
+        },
+        {
+            import = "vraton.plugins.enviroment"
+        }
+    },
+    {
         checker = {
             enabled = true,
             notify = false,
