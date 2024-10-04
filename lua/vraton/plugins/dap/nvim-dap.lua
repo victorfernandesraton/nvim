@@ -17,6 +17,7 @@ return {
         "leoluz/nvim-dap-go",
         -- python
         'mfussenegger/nvim-dap-python',
+        "linux-cultist/venv-selector.nvim",
         -- js
         "mxsdev/nvim-dap-vscode-js",
         {
@@ -89,36 +90,37 @@ return {
     config = function(_, opts)
         local dap = require('dap')
         local dapui = require('dapui')
+        local python_path = require("venv-selector").python()
         require('dap-go').setup({
             external_config = {
                 enabled = true,
             }
         })
 
-        local is_windows = function()
-            return vim.fn.has("win32") == 1
-        end
-
-        local function python_exe(venv)
-            if is_windows() then
-                return venv .. '\\Scripts\\python.exe'
-            end
-            return venv .. '/bin/python'
-        end
-        local get_python_path = function()
-            local venv_path = os.getenv('VIRTUAL_ENV')
-            if venv_path then
-                return python_exe(venv_path)
-            end
-
-            venv_path = os.getenv("CONDA_PREFIX")
-            if venv_path then
-                if is_windows() then
-                    return venv_path .. '\\python.exe'
-                end
-                return venv_path .. '/bin/python'
-            end
-        end
+        -- local is_windows = function()
+        --     return vim.fn.has("win32") == 1
+        -- end
+        --
+        -- local function python_exe(venv)
+        --     if is_windows() then
+        --         return venv .. '\\Scripts\\python.exe'
+        --     end
+        --     return venv .. '/bin/python'
+        -- end
+        -- local python_path = function()
+        --     local venv_path = os.getenv('VIRTUAL_ENV')
+        --     if venv_path then
+        --         return python_exe(venv_path)
+        --     end
+        --
+        --     venv_path = os.getenv("CONDA_PREFIX")
+        --     if venv_path then
+        --         if is_windows() then
+        --             return venv_path .. '\\python.exe'
+        --         end
+        --         return venv_path .. '/bin/python'
+        --     end
+        -- end
         require('mason-nvim-dap').setup {
             -- Makes a best effort to setup the various debuggers with
             -- reasonable debug configurations
@@ -147,13 +149,15 @@ return {
             },
         }
 
+
+
         table.insert(require('dap').configurations.python, {
             type = 'python',
             request = 'launch',
             name = 'Run handler.py RPA',
             program = 'handler.py',
             console = "integratedTerminal",
-            pythonPath = get_python_path()
+            pythonPath = python_path
         })
 
         table.insert(require('dap').configurations.python, {
@@ -164,7 +168,7 @@ return {
             args = {
                 "${file}",
             },
-            pythonPath = get_python_path(),
+            pythonPath = python_path,
             console = "integratedTerminal",
         })
         table.insert(require('dap').configurations.python, {
@@ -177,7 +181,7 @@ return {
                 "${fileBasenameNoExtension}",
             },
             cwd = "${workspaceFolder}/data_collection",
-            pythonPath = get_python_path(),
+            pythonPath = python_path,
             console = "integratedTerminal",
         })
 

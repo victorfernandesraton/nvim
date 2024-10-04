@@ -1,7 +1,5 @@
 vim.g.mapleader = " "
 local keymap = vim.keymap
--- show file explorer
-keymap.set("n", "<leader>pv", vim.cmd.Ex)
 -- clear search
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
