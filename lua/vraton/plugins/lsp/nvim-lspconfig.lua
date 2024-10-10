@@ -87,7 +87,7 @@ return {
                                     black = { enabled = false },
                                     autopep8 = { enabled = false },
                                     yapf = { enabled = false },
-                                    ruff = { enabled = true },
+                                    ruff = { enabled = false },
                                     pylint = { enabled = false, executable = "pylint" },
                                     pyflakes = { enabled = false },
                                     pycodestyle = { enabled = false },
