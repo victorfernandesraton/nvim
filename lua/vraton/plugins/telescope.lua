@@ -54,8 +54,8 @@ return {
 
         local builtin = require('telescope.builtin')
         keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
-        keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
-        keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+        keymap.set('n', '<C-p>', builtin.find_files, { desc = 'Telescope find files' })
+        keymap.set('n', '<C-f>', builtin.live_grep, { desc = 'Telescope live grep' })
         keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
         keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
         keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = 'Telescope old files' })
@@ -64,5 +64,7 @@ return {
         keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
         keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
         keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
+        keymap.set('n', '<leader>gb', builtin.git_branches, { desc = 'Git branches' })
+        keymap.set('n', '<leader>gS', builtin.git_stash, { desc = 'Git stash' })
     end,
 }

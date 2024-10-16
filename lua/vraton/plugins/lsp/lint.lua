@@ -6,9 +6,9 @@ return {
 
         lint.linters_by_ft = {
             javascript = { "standardjs" },
-            typescript = { "ts-standard" },
+            typescript = { "standardjs" },
             javascriptreact = { "standardjs" },
-            typescriptreact = { "ts-standard" },
+            typescriptreact = { "standardjs" },
             svelte = { "standardjs" },
             python = { "ruff", "mypy" },
             golang = { "golangci-lint" },
