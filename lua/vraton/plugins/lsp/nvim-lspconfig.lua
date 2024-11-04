@@ -31,6 +31,7 @@ return {
             ensure_installed = {
                 "rust_analyzer",
                 "ts_ls",
+                "denols",
                 "html",
                 "cssls",
                 "tailwindcss",

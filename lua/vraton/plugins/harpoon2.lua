@@ -4,7 +4,14 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
         local harpoon = require('harpoon')
-        harpoon:setup({})
+        harpoon:setup({
+            global_settings = {
+                save_on_toggle = true,
+                save_on_change = true,
+                enter_on_sendcmd = false,
+                tabline = true
+            },
+        })
 
         -- basic telescope configuration
         local conf = require("telescope.config").values
@@ -31,5 +38,6 @@ return {
 
         vim.keymap.set("n", "<leader>hp", function() harpoon:list():prev() end, { desc = "Harpoon prev" })
         vim.keymap.set("n", "<leader>hn", function() harpoon:list():next() end, { desc = "Harpoon next" })
+        vim.keymap.set("n", "<leader>hc", function() harpoon:list():clear() end, { desc = "Harpoon clear" })
     end
 }
