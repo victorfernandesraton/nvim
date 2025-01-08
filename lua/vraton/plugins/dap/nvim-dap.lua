@@ -69,6 +69,7 @@ return {
             {
                 elements = {
                     "console",
+                    "repl",
                 },
                 size = 10,
                 position = "bottom", -- Can be "bottom" or "top"
@@ -160,7 +161,6 @@ return {
             pythonPath = python_path,
             console = "integratedTerminal",
         })
-
 
         local keymap = vim.keymap
         -- dap keybinds

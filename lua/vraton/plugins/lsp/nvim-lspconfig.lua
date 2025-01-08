@@ -105,6 +105,23 @@ return {
 
                     }
                 end,
+                denols = function()
+                    require("lspconfig").denols.setup({
+                        capabilities = capabilities,
+                        root_dir = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc"),
+                        init_options = {
+                            lint = true
+                        }
+                    })
+                end,
+                ts_ls = function()
+                    require("lspconfig").ts_ls.setup({
+                        capabilities = capabilities,
+                        root_dir = require("lspconfig.util").root_pattern("tsconfig.json", "package.json", "yarn.lock",
+                            "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"),
+                        single_file_support = false
+                    })
+                end
             }
         })
     end,

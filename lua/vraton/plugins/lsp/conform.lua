@@ -10,10 +10,10 @@ return {
                 lua = { "stylua" },
                 python = { "ruff_fix", "ruff_format" },
                 elixir = { "elixirls" },
-                javascript = { "standardjs" },
-                typescript = { "standardjs" },
-                javascriptreact = { "standardjs" },
-                typescriptreact = { "standardjs" },
+                javascript = { "standardjs", "denolsp" },
+                typescript = { "standardjs", "denolsp" },
+                javascriptreact = { "standardjs", "denolsp" },
+                typescriptreact = { "standardjs", "denolsp" },
                 php = { "phpcbf" }
             },
             format_on_save = {
