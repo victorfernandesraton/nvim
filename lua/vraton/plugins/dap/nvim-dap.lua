@@ -162,6 +162,9 @@ return {
             console = "integratedTerminal",
         })
 
+        dap.adapters.debugpy = dap.adapters.python
+
+
         local keymap = vim.keymap
         -- dap keybinds
         keymap.set("n", "<leader>bb", function() dap.toggle_breakpoint() end, { desc = "DAP toggle breakpoint" })

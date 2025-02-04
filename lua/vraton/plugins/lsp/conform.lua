@@ -8,7 +8,7 @@ return {
             formatters_by_ft = {
                 go = { "goimports", "gofmt" },
                 lua = { "stylua" },
-                python = { "ruff_fix", "ruff_format" },
+                python = { "ruff_fix", "ruff_format", "ruff_organize_imports" },
                 elixir = { "elixirls" },
                 javascript = { "standardjs", "denolsp" },
                 typescript = { "standardjs", "denolsp" },
@@ -24,6 +24,27 @@ return {
                 lsp_format = "fallback",
                 async = true,
             },
+            formatters = {
+                ruff_organize_imports = {
+                    command = 'ruff',
+                    args = {
+                        'check',
+                        '--force-exclude',
+                        '--select=I001',
+                        '--fix',
+                        '--exit-zero',
+                        '--stdin-filename',
+                        '$FILENAME',
+                        '-',
+                    },
+                    stdin = true,
+                    cwd = require('conform.util').root_file {
+                        'pyproject.toml',
+                        'ruff.toml',
+                        '.ruff.toml',
+                    },
+                },
+            }
         })
 
         vim.keymap.set({ "n", "v" }, "<leader>=", function()

@@ -10,7 +10,7 @@ return {
             javascriptreact = { "standardjs" },
             typescriptreact = { "standardjs" },
             svelte = { "standardjs" },
-            python = { "ruff", "mypy" },
+            python = { "mypy" },
             golang = { "golangci-lint" },
             php = { "phpstan" }
         }

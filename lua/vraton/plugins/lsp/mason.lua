@@ -10,13 +10,11 @@ return {
         -- enable mason and configure icons
         mason.setup({
             ensure_installed = {
-
             }
         })
         mason_tool_installer.setup({
             ensure_installed = {
                 "ruff",
-                "pylint",
                 "standardjs",
                 "ts-standard",
                 "goimports",
