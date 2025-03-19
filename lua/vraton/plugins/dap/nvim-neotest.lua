@@ -34,8 +34,6 @@ return {
                     dap = {
                         justMyCode = true,
                     },
-                    args = { "--log-level", "DEBUG" },
-                    runner = "pytest",
                 }),
                 require("neotest-go"), -- Registration
                 require('neotest-jest')({

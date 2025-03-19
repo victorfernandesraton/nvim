@@ -17,14 +17,21 @@ return {
             end
             return text
         end
+        local function getrelativelines()
+            if vim.wo.relativenumber then
+                return "rln:on"
+            else
+                return "rln:off"
+            end
+        end
         require('lualine').setup({
             sections = {
                 lualine_a = { 'mode' },
                 lualine_b = { 'branch', 'diff', 'diagnostics' },
-                lualine_c = { 'filename' },
+                lualine_c = { 'filename', },
                 lualine_x = { 'encoding', 'fileformat', 'filetype' },
                 lualine_y = { getautofmt },
-                lualine_z = { "location", "progress" },
+                lualine_z = { "location", "progress", getrelativelines },
             },
         })
     end

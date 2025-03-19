@@ -126,7 +126,14 @@ return {
             },
         }
 
-
+        table.insert(require('dap').configurations.python, {
+            type = 'python',
+            request = 'launch',
+            name = 'Run current file (with env)',
+            program = '${file}',
+            console = "integratedTerminal",
+            cwd = python_path
+        })
 
         table.insert(require('dap').configurations.python, {
             type = 'python',

@@ -15,14 +15,13 @@ return {
         mason_tool_installer.setup({
             ensure_installed = {
                 "ruff",
-                "standardjs",
-                "ts-standard",
                 "goimports",
                 "golines",
                 "golangci-lint",
                 "mypy",
                 "phpcbf",
-                "phpstan"
+                "phpstan",
+                "eslint_d"
             },
         })
     end
