@@ -123,6 +123,7 @@ return {
                 'python',
                 'php',
                 'node',
+                'elixir'
             },
         }
 
@@ -169,6 +170,34 @@ return {
             console = "integratedTerminal",
         })
 
+
+        -- -- Elixir mix
+        -- table.insert(require("dap").configurations.adapters.mix_task, {
+        --     type = 'executable',
+        --     command = vim.fn.stdpath("data") .. '/mason/bin/elixir-ls-debugger',
+        --     args = {}
+        -- })
+        --
+        --
+        -- -- Elixir test
+        -- table.insert(require("dap").configurations.adapters.elixir, {
+        --     {
+        --         type = "mix_task",
+        --         name = "mix test",
+        --         task = 'test',
+        --         taskArgs = { "--trace" },
+        --         request = "launch",
+        --         startApps = true, -- for Phoenix projects
+        --         projectDir = "${workspaceFolder}",
+        --         requireFiles = {
+        --             "test/**/test_helper.exs",
+        --             "test/**/*_test.exs"
+        --         }
+        --     }
+        -- })
+
+
+        -- hotfix to enable python as a debugpy (VScode compatibility)        
         dap.adapters.debugpy = dap.adapters.python
 
 

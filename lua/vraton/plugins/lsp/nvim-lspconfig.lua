@@ -29,10 +29,6 @@ return {
                 if client:supports_method('textDocument/formatting') then
                     vim.keymap.set('n', '<leader>==', function() vim.lsp.buf.format({bufnr = args.buf, id= client.id}) end, { desc = "AutoFormat with lsp" })
                 end
-                if client.name == 'ruff' then
-                    -- Disable hover in favor of Pyright
-                    client.server_capabilities.hoverProvider = false
-                end
             end,
         })
 
@@ -64,6 +60,29 @@ return {
             handlers = {
                 function(server_name)
                     lspconfig[server_name].setup({})
+                end,
+                pyright = function() 
+                    require('lspconfig').pyright.setup {
+                        settings = {
+                            pyright = {
+                                disableOrganizeImports = true,
+                            },
+                            python = {
+                                analysis = {
+                                    ignore = { '*' },
+                                },
+                            },
+                        },
+                    }
+                end,
+                ruff = function()
+                    require("lspconfig").ruff.setup {
+                        init_options = {
+                            settings = {
+                                log_level = "debug"
+                            }
+                        }
+                    }
                 end,
                 -- this is the "custom handler" for `lua_ls`
                 lua_ls = function()
