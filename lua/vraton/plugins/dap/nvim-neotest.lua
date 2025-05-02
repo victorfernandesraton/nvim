@@ -45,7 +45,9 @@ return {
                         return vim.fn.getcwd()
                     end,
                 }),
-                require("neotest-elixir"),
+                require("neotest-elixir")({
+                     args = {"--trace"}
+                }),
             }
         })
 

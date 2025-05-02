@@ -61,29 +61,6 @@ return {
                 function(server_name)
                     lspconfig[server_name].setup({})
                 end,
-                pyright = function() 
-                    require('lspconfig').pyright.setup {
-                        settings = {
-                            pyright = {
-                                disableOrganizeImports = true,
-                            },
-                            python = {
-                                analysis = {
-                                    ignore = { '*' },
-                                },
-                            },
-                        },
-                    }
-                end,
-                ruff = function()
-                    require("lspconfig").ruff.setup {
-                        init_options = {
-                            settings = {
-                                log_level = "debug"
-                            }
-                        }
-                    }
-                end,
                 -- this is the "custom handler" for `lua_ls`
                 lua_ls = function()
                     require("lspconfig").lua_ls.setup({

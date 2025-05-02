@@ -176,30 +176,32 @@ return {
         --     type = 'executable',
         --     command = vim.fn.stdpath("data") .. '/mason/bin/elixir-ls-debugger',
         --     args = {}
-        -- })
+        -- }
         --
         --
         -- -- Elixir test
-        -- table.insert(require("dap").configurations.adapters.elixir, {
-        --     {
-        --         type = "mix_task",
-        --         name = "mix test",
-        --         task = 'test',
-        --         taskArgs = { "--trace" },
-        --         request = "launch",
-        --         startApps = true, -- for Phoenix projects
-        --         projectDir = "${workspaceFolder}",
-        --         requireFiles = {
-        --             "test/**/test_helper.exs",
-        --             "test/**/*_test.exs"
-        --         }
+        --
+        --
+        --
+        -- table.insert(require("dap").configurations.elixir, {
+        --     type = "mix_task",
+        --     name = "mix test",
+        --     task = 'test',
+        --     taskArgs = { "--trace" },
+        --     request = "launch",
+        --     startApps = true, -- for Phoenix projects
+        --     projectDir = "${workspaceFolder}",
+        --     requireFiles = {
+        --         "test/**/test_helper.exs",
+        --         "test/**/*_test.exs"
         --     }
         -- })
-
+        --
 
         -- hotfix to enable python as a debugpy (VScode compatibility)        
         dap.adapters.debugpy = dap.adapters.python
 
+        dap.adapters.node = dap.adapters.node2
 
         local keymap = vim.keymap
         -- dap keybinds
@@ -237,7 +239,7 @@ return {
         dapui.setup(opts)
 
         dap.listeners.after.event_initialized["dapui_config"] = function()
-            dapui.open()
+            -- dapui.open()
         end
         dap.listeners.after.event_terminated["dapui_config"] = function()
             -- require('dapui').close()
