@@ -48,7 +48,7 @@ return {
                 "lua_ls",
                 "emmet_ls",
                 "ruff",
-                "pylsp",
+                "pyright",
                 "gopls",
                 'sqlls',
                 'bashls',
@@ -87,31 +87,6 @@ return {
                                 },
                             },
                         },
-                    }
-                end,
-                pylsp = function()
-                    require('lspconfig').pylsp.setup {
-                        settings = {
-                            pylsp = {
-                                plugins = {
-                                    black = { enabled = false },
-                                    autopep8 = { enabled = false },
-                                    yapf = { enabled = false },
-                                    ruff = { enabled = false },
-                                    pylint = { enabled = false, executable = "pylint" },
-                                    pyflakes = { enabled = false },
-                                    pycodestyle = { enabled = false },
-                                    -- type checker
-                                    pylsp_mypy = { enabled = false },
-                                    -- auto-completion options
-                                    jedi_completion = { fuzzy = true },
-                                    -- import sorting
-                                    pyls_isort = { enabled = false },
-
-                                }
-                            }
-                        }
-
                     }
                 end,
                 denols = function()
