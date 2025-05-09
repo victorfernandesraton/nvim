@@ -34,7 +34,6 @@ return {
 
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
         local mason_lspconfig = require("mason-lspconfig")
-        local lspconfig = require("lspconfig")
         mason_lspconfig.setup({
             auto_start = true,
             -- list of servers for mason to install
@@ -59,11 +58,11 @@ return {
             },
             handlers = {
                 function(server_name)
-                    lspconfig[server_name].setup({})
+                    vim.lsp.config(server_name, {})
                 end,
                 -- this is the "custom handler" for `lua_ls`
                 lua_ls = function()
-                    require("lspconfig").lua_ls.setup({
+                    vim.lsp.config.lua_ls = {
                         capabilities = capabilities,
                         settings = {
                             Lua = {
@@ -72,10 +71,10 @@ return {
                                 }
                             }
                         },
-                    })
+                    }
                 end,
                 gopls = function()
-                    require("lspconfig").gopls.setup {
+                    vim.lsp.config.gopls= {
                         cmd = { "gopls" },
                         filetypes = { "go", "gomod", "gowork", "gotmpl" },
                         settings = {
@@ -90,21 +89,21 @@ return {
                     }
                 end,
                 denols = function()
-                    require("lspconfig").denols.setup({
+                    vim.lsp.config.denols = {
                         capabilities = capabilities,
                         root_dir = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc"),
                         init_options = {
                             lint = true
                         }
-                    })
+                    }
                 end,
                 ts_ls = function()
-                    require("lspconfig").ts_ls.setup({
+                    vim.lsp.config.ts_ls = {
                         capabilities = capabilities,
                         root_dir = require("lspconfig.util").root_pattern("tsconfig.json", "package.json", "yarn.lock",
                             "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"),
                         single_file_support = false
-                    })
+                    }
                 end
             }
         })
