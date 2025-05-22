@@ -47,7 +47,7 @@ return {
                 "lua_ls",
                 "emmet_ls",
                 "ruff",
-                "pyright",
+                "pylsp",
                 "gopls",
                 'sqlls',
                 'bashls',
@@ -91,18 +91,14 @@ return {
                 denols = function()
                     vim.lsp.config.denols = {
                         capabilities = capabilities,
-                        root_dir = require("lspconfig.util").root_pattern("deno.json", "deno.jsonc"),
-                        init_options = {
-                            lint = true
-                        }
+                        root_markers ={"deno.json", "deno.jsonc"},
                     }
                 end,
                 ts_ls = function()
                     vim.lsp.config.ts_ls = {
                         capabilities = capabilities,
-                        root_dir = require("lspconfig.util").root_pattern("tsconfig.json", "package.json", "yarn.lock",
-                            "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"),
-                        single_file_support = false
+                        root_markers = {"tsconfig.json", "package.json", "yarn.lock",
+                            "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"},
                     }
                 end
             }

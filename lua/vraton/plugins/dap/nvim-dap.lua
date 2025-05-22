@@ -98,6 +98,7 @@ return {
             }
         })
 
+
         require('mason-nvim-dap').setup {
             -- Makes a best effort to setup the various debuggers with
             -- reasonable debug configurations
@@ -127,23 +128,6 @@ return {
             },
         }
 
-        table.insert(require('dap').configurations.python, {
-            type = 'python',
-            request = 'launch',
-            name = 'Run current file (with env)',
-            program = '${file}',
-            console = "integratedTerminal",
-            cwd = python_path
-        })
-
-        table.insert(require('dap').configurations.python, {
-            type = 'python',
-            request = 'launch',
-            name = 'Run handler.py RPA',
-            program = 'handler.py',
-            console = "integratedTerminal",
-            pythonPath = python_path
-        })
 
         table.insert(require('dap').configurations.python, {
             name = "Pytest: Current File",
@@ -153,19 +137,6 @@ return {
             args = {
                 "${file}",
             },
-            pythonPath = python_path,
-            console = "integratedTerminal",
-        })
-        table.insert(require('dap').configurations.python, {
-            name = "Pytest: Querido diário spyder",
-            type = "python",
-            request = "launch",
-            module = "scrapy",
-            args = {
-                "crawl",
-                "${fileBasenameNoExtension}",
-            },
-            cwd = "${workspaceFolder}/data_collection",
             pythonPath = python_path,
             console = "integratedTerminal",
         })
