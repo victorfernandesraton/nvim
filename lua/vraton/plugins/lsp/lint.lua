@@ -5,11 +5,11 @@ return {
         local lint = require("lint")
 
         lint.linters_by_ft = {
-            javascript = { "eslint", "deno" },
-            typescript = { "eslint", "deno" },
-            javascriptreact = { "eslint" },
-            typescriptreact = { "eslint" },
-            svelte = { "eslint" },
+            javascript = {  "deno" },
+            typescript = { "eslint_d", "deno" },
+            javascriptreact = { "eslint_d" },
+            typescriptreact = { "eslint_d" },
+            svelte = { "eslint_d" },
             python = { "mypy" },
             golang = { "golangci-lint" },
             php = { "phpstan" }

@@ -32,15 +32,30 @@ return {
             end,
         })
 
+
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
+       
+
+
         local mason_lspconfig = require("mason-lspconfig")
         mason_lspconfig.setup({
-            auto_start = true,
+            automatic_enable = {
+                "pylsp",
+                "rust_analyzer",
+                "ruff",
+                "elixirls",
+                'denols',
+                "gopls",
+                'sqlls',
+                'bashls',
+                'ts_ls',
+                'marksman',
+            },
             -- list of servers for mason to install
             ensure_installed = {
                 "rust_analyzer",
+                'denols',
                 "ts_ls",
-                "denols",
                 "html",
                 "cssls",
                 "tailwindcss",
@@ -54,54 +69,66 @@ return {
                 'marksman',
                 "elixirls",
                 "intelephense",
-                "eslint",
             },
-            handlers = {
-                function(server_name)
-                    vim.lsp.config(server_name, {})
-                end,
-                -- this is the "custom handler" for `lua_ls`
-                lua_ls = function()
-                    vim.lsp.config.lua_ls = {
-                        capabilities = capabilities,
-                        settings = {
-                            Lua = {
-                                diagnostics = {
-                                    globals = { 'vim' }
-                                }
-                            }
-                        },
-                    }
-                end,
-                gopls = function()
-                    vim.lsp.config.gopls= {
-                        cmd = { "gopls" },
-                        filetypes = { "go", "gomod", "gowork", "gotmpl" },
-                        settings = {
-                            gopls = {
-                                completeUnimported = true,
-                                usePlaceholders = true,
-                                analyses = {
-                                    unusedparams = true,
-                                },
-                            },
-                        },
-                    }
-                end,
-                denols = function()
-                    vim.lsp.config.denols = {
-                        capabilities = capabilities,
-                        root_markers ={"deno.json", "deno.jsonc"},
-                    }
-                end,
-                ts_ls = function()
-                    vim.lsp.config.ts_ls = {
-                        capabilities = capabilities,
-                        root_markers = {"tsconfig.json", "package.json", "yarn.lock",
-                            "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"},
-                    }
+        })
+        vim.lsp.config('elixirls', {
+            capabilities = capabilities,
+            settings = {}
+        })
+        vim.lsp.config('denols', {
+            capabilities = capabilities,
+            root_dir = function (buffer, on_dir)
+                if vim.fs.root(0, {'deno.json', 'deno.jsonc'}) then
+                    on_dir(vim.fn.getcwd())
                 end
-            }
+            end,
+            settings = {}
+        })
+
+        vim.lsp.config('ts_ls', {
+            capabilities = capabilities,
+            root_markers = {"tsconfig.json", "package.json", "yarn.lock",
+                "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"},
+            root_dir = function (buffer, on_dir)
+                if vim.fs.root(0, {'tsconfig.json', "package.json", "yarn.lock"}) then
+                    on_dir(vim.fn.getcwd())
+                end
+            end,
+        })
+        vim.lsp.config('lua_ls', {
+            capabilities = capabilities,
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        globals = { 'vim' }
+                    }
+                }
+            },
+        })
+        vim.lsp.enable('lua_ls')
+        vim.lsp.config('gopls', {
+            cmd = { "gopls" },
+            filetypes = { "go", "gomod", "gowork", "gotmpl" },
+            settings = {
+                gopls = {
+                    completeUnimported = true,
+                    usePlaceholders = true,
+                    analyses = {
+                        unusedparams = true,
+                    },
+                },
+            },
+        })
+        vim.lsp.config('ruff', {
+            filetypes = { "python", "jupyter" },
+            settings = {
+            },
+        })
+
+        vim.lsp.config('pylsp', {
+            filetypes = { "python", "jupyter" },
+            settings = {
+            },
         })
 
     end,
