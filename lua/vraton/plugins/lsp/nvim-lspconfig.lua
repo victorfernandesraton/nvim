@@ -49,7 +49,8 @@ return {
                 'sqlls',
                 'bashls',
                 'ts_ls',
-                'marksman'
+                'marksman',
+                "eslint"
             },
             -- list of servers for mason to install
             ensure_installed = {
@@ -68,7 +69,8 @@ return {
                 'bashls',
                 'marksman',
                 "elixirls",
-                "intelephense"
+                "intelephense",
+                "eslint"
             }
         })
         vim.lsp.config('elixirls', {
@@ -91,6 +93,17 @@ return {
                 "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"},
             root_dir = function (buffer, on_dir)
                 if vim.fs.root(0, {'tsconfig.json', "package.json", "yarn.lock"}) then
+                    on_dir(vim.fn.getcwd())
+                end
+            end,
+        })
+
+        vim.lsp.config('eslint', {
+            capabilities = capabilities,
+            root_markers = {{"tsconfig.json", "package.json", "yarn.lock",
+                "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"}, ".eslintrc", "eslint.json", "eslint.config.js", "eslint.config.mjs"},
+            root_dir = function (buffer, on_dir)
+                if vim.fs.root(0, {".eslintrc", "eslint.config.js","eslint.json", "eslint.config.mjs"}) then
                     on_dir(vim.fn.getcwd())
                 end
             end,
