@@ -49,7 +49,7 @@ return {
                 'sqlls',
                 'bashls',
                 'ts_ls',
-                'marksman',
+                'marksman'
             },
             -- list of servers for mason to install
             ensure_installed = {
@@ -68,8 +68,8 @@ return {
                 'bashls',
                 'marksman',
                 "elixirls",
-                "intelephense",
-            },
+                "intelephense"
+            }
         })
         vim.lsp.config('elixirls', {
             capabilities = capabilities,
@@ -78,7 +78,7 @@ return {
         vim.lsp.config('denols', {
             capabilities = capabilities,
             root_dir = function (buffer, on_dir)
-                if vim.fs.root(0, {'deno.json', 'deno.jsonc'}) then
+                if not vim.fs.root(0, {'tsconfig.json', 'package.json', 'yarn.lock'}) then
                     on_dir(vim.fn.getcwd())
                 end
             end,
@@ -99,6 +99,9 @@ return {
             capabilities = capabilities,
             settings = {
                 Lua = {
+                    runtime = {
+                        version = 'LuaJIT',
+                    },
                     diagnostics = {
                         globals = { 'vim' }
                     }
