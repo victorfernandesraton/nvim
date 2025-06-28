@@ -49,6 +49,8 @@ return {
                 'sqlls',
                 'bashls',
                 'ts_ls',
+                "lua_ls",
+                "clangd",
                 'marksman',
                 "eslint"
             },
@@ -59,6 +61,7 @@ return {
                 "ts_ls",
                 "html",
                 "cssls",
+                "clangd",
                 "tailwindcss",
                 "lua_ls",
                 "emmet_ls",
@@ -79,7 +82,7 @@ return {
         })
         vim.lsp.config('denols', {
             capabilities = capabilities,
-            root_dir = function (buffer, on_dir)
+            root_dir = function (_, on_dir)
                 if not vim.fs.root(0, {'tsconfig.json', 'package.json', 'yarn.lock'}) then
                     on_dir(vim.fn.getcwd())
                 end
@@ -91,7 +94,7 @@ return {
             capabilities = capabilities,
             root_markers = {"tsconfig.json", "package.json", "yarn.lock",
                 "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"},
-            root_dir = function (buffer, on_dir)
+            root_dir = function (_, on_dir)
                 if vim.fs.root(0, {'tsconfig.json', "package.json", "yarn.lock"}) then
                     on_dir(vim.fn.getcwd())
                 end
@@ -102,12 +105,13 @@ return {
             capabilities = capabilities,
             root_markers = {{"tsconfig.json", "package.json", "yarn.lock",
                 "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"}, ".eslintrc", "eslint.json", "eslint.config.js", "eslint.config.mjs"},
-            root_dir = function (buffer, on_dir)
+            root_dir = function (_, on_dir)
                 if vim.fs.root(0, {".eslintrc", "eslint.config.js","eslint.json", "eslint.config.mjs"}) then
                     on_dir(vim.fn.getcwd())
                 end
             end,
         })
+
         vim.lsp.config('lua_ls', {
             capabilities = capabilities,
             settings = {
@@ -121,7 +125,25 @@ return {
                 }
             },
         })
-        vim.lsp.enable('lua_ls')
+        vim.lsp.config('clangd', {
+            {
+                cmd = { "clangd", "--background-index", "--compile-commands-dir", "build" },
+                init_options = {
+                    clangdFileStatus = true,
+                    clangdSemanticHighlighting = true
+                },
+                filetypes = { "c", "cpp", "cxx", "cc" },
+                root_dir = function()
+                    return vim.fn.getcwd()
+                end,
+                settings = {
+                    ["clangd"] = {
+                        ["compilationDatabasePath"] = "build",
+                        ["fallbackFlags"] = { "-std=c++17" }
+                    }
+                }
+            }
+        })
         vim.lsp.config('gopls', {
             cmd = { "gopls" },
             filetypes = { "go", "gomod", "gowork", "gotmpl" },

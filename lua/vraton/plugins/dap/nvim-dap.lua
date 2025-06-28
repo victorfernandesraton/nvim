@@ -92,13 +92,9 @@ return {
         local dap = require('dap')
         local dapui = require('dapui')
         local python_path = require("venv-selector").python()
-        require('dap-go').setup({
-            external_config = {
-                enabled = true,
-            }
-        })
+        require('dap-go').setup()
 
-
+     
         require('mason-nvim-dap').setup {
             -- Makes a best effort to setup the various debuggers with
             -- reasonable debug configurations
@@ -127,6 +123,11 @@ return {
                 'elixir'
             },
         }
+        require('dap-python').setup('uv')
+        require('dap-python').resolve_python = function ()
+            return python_path
+        end
+
 
 
         table.insert(require('dap').configurations.python, {
@@ -137,7 +138,14 @@ return {
             args = {
                 "${file}",
             },
-            pythonPath = python_path,
+            console = "integratedTerminal",
+        })
+
+        table.insert(require('dap').configurations.python, {
+            name = "Python: Current File",
+            type = "python",
+            request = "launch",
+            program = "${file}",
             console = "integratedTerminal",
         })
 

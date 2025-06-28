@@ -1,7 +1,7 @@
 vim.g.mapleader = " "
 local keymap = vim.keymap
 -- clear search
-keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", {desc = "Reser search markup when go to nomral mode and press esc"})
 
 -- copy things from vim to my system
 keymap.set("n", "<leader>y", "\"+ y")
@@ -39,3 +39,4 @@ end
 
 -- Shortcut to reload all Lua configuration
 keymap.set('n', '<leader>rl', ':luafile $MYVIMRC<CR>', { noremap = true, silent = true })
+
