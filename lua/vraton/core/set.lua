@@ -32,5 +32,5 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 opt.swapfile = false
-
-
+-- patch for ntre
+vim.g.netrw_liststyle  = 3
