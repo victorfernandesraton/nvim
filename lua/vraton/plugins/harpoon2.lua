@@ -39,10 +39,10 @@ return {
         vim.keymap.set("n", "<leader>hp", function() harpoon:list():prev() end, { desc = "Harpoon prev" })
         vim.keymap.set("n", "<leader>hn", function() harpoon:list():next() end, { desc = "Harpoon next" })
         vim.keymap.set("n", "<leader>hc", function() harpoon:list():clear() end, { desc = "Harpoon clear" })
-        vim.keymap.set("n", "<leader>hw", function() harpoon:list():select(1) end)
-        vim.keymap.set("n", "<leader>he", function() harpoon:list():select(2) end)
-        vim.keymap.set("n", "<leader>hr", function() harpoon:list():select(3) end)
-        vim.keymap.set("n", "<leader>hi", function() harpoon:list():select(4) end)
+        vim.keymap.set("n", "<leader>h1", function() harpoon:list():select(1) end)
+        vim.keymap.set("n", "<leader>h2", function() harpoon:list():select(2) end)
+        vim.keymap.set("n", "<leader>h3", function() harpoon:list():select(3) end)
+        vim.keymap.set("n", "<leader>h4", function() harpoon:list():select(4) end)
 
     end
 }
