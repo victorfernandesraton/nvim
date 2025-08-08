@@ -36,6 +36,10 @@ return {
                 if not client:supports_method('textDocument/hover') then
                     vim.notify('LSP not support hover ' .. client.name, vim.log.levels.INFO, { title = 'LSP' })
                 end
+                -- fix completion 
+                if client:supports_method('textDocument/completion') then
+                    vim.lsp.completion.enable(true, client.id, args.buf, {autotrigger = true})
+                end
 
                 -- Optional: echo server name when attached
                 vim.notify('LSP attached: ' .. client.name, vim.log.levels.INFO, { title = 'LSP' })
