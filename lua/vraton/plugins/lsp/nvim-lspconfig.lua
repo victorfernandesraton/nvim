@@ -11,7 +11,7 @@ return {
         -- my shotcuts
         vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, { desc = "Goto definition" })
         vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, { desc = "Goto implementation" })
-        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, { desc = "LSP hover" })
+        vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP hover" })
         vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end,
             { desc = "Search workspace_symbol" })
         vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, { desc = "Open float diagnostic" })
@@ -24,36 +24,40 @@ return {
         vim.api.nvim_create_autocmd('LspAttach', {
             callback = function(args)
                 local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+                local buffer = args.buf
                 -- Auto-format ("lint") on save.
                 -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
                 if client:supports_method('textDocument/formatting') then
-                    vim.keymap.set('n', '<leader>==', function() vim.lsp.buf.format({bufnr = args.buf, id= client.id}) end, { desc = "AutoFormat with lsp" })
+                    vim.keymap.set('n', '<leader>==',
+                        function() vim.lsp.buf.format({ bufnr = args.buf, id = client.id }) end,
+                        { desc = "AutoFormat with lsp" })
                 end
+                -- fix hoover when not work
+                if not client:supports_method('textDocument/hover') then
+                    vim.notify('LSP not support hover ' .. client.name, vim.log.levels.INFO, { title = 'LSP' })
+                end
+
+                -- Optional: echo server name when attached
+                vim.notify('LSP attached: ' .. client.name, vim.log.levels.INFO, { title = 'LSP' })
             end,
         })
 
 
-        local capabilities = require('cmp_nvim_lsp').default_capabilities()
-       
-
-
         local mason_lspconfig = require("mason-lspconfig")
         mason_lspconfig.setup({
-            automatic_enable = {
-                "pylsp",
-                "rust_analyzer",
-                "ruff",
-                "elixirls",
-                'denols',
-                "gopls",
-                'sqlls',
-                'bashls',
-                'ts_ls',
-                "lua_ls",
-                "clangd",
-                'marksman',
-                "eslint"
-            },
+            -- automatic_enable = {
+            --     "pylsp",
+            --     "rust_analyzer",
+            --     "ruff",
+            --     "gopls",
+            --     'sqlls',
+            --     'bashls',
+            --     'ts_ls',
+            --     "lua_ls",
+            --     'marksman',
+            --     "eslint",
+            --     "cssls"
+            -- },
             -- list of servers for mason to install
             ensure_installed = {
                 "rust_analyzer",
@@ -64,7 +68,6 @@ return {
                 "clangd",
                 "tailwindcss",
                 "lua_ls",
-                "emmet_ls",
                 "ruff",
                 "pylsp",
                 "gopls",
@@ -73,47 +76,73 @@ return {
                 'marksman',
                 "elixirls",
                 "intelephense",
-                "eslint"
+                "eslint",
             }
         })
+        vim.lsp.enable('rust_analyzer')
+        vim.lsp.enable('sqlls')
+        vim.lsp.enable('cssls')
+        vim.lsp.enable('html')
+        vim.lsp.enable('tailwindcss')
+        vim.lsp.enable('bashls')
+        vim.lsp.enable('marksman')
         vim.lsp.config('elixirls', {
-            capabilities = capabilities,
-            settings = {}
-        })
-        vim.lsp.config('denols', {
-            capabilities = capabilities,
-            root_dir = function (_, on_dir)
-                if not vim.fs.root(0, {'tsconfig.json', 'package.json', 'yarn.lock'}) then
-                    on_dir(vim.fn.getcwd())
-                end
-            end,
+            init_options = {
+                enable = true,
+                lint = true,
+            },
             settings = {}
         })
 
+        vim.lsp.config('denols', {
+            init_options = {
+                enable = true,
+                lint = true,
+                unstable = true,
+            },
+            root_dir = function(_, on_dir)
+                -- TODO: para lidar com deno usando por default projetos que não possuem isso aqui
+                if not vim.fs.root(0, { 'tsconfig.json', 'package.json', 'yarn.lock' }) then
+                    on_dir(vim.fn.getcwd())
+                end
+            end,
+            single_file_support = false,
+            settings = {},
+        })
+
         vim.lsp.config('ts_ls', {
-            capabilities = capabilities,
-            root_markers = {"tsconfig.json", "package.json", "yarn.lock",
-                "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"},
-            root_dir = function (_, on_dir)
-                if vim.fs.root(0, {'tsconfig.json', "package.json", "yarn.lock"}) then
+            init_options = {
+                enable = true,
+            },
+            root_markers = { "tsconfig.json", "package.json", "yarn.lock",
+                "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml" },
+            root_dir = function(_, on_dir)
+                if vim.fs.root(0, { 'tsconfig.json', "package.json", "yarn.lock" }) then
                     on_dir(vim.fn.getcwd())
                 end
             end,
         })
 
         vim.lsp.config('eslint', {
-            capabilities = capabilities,
-            root_markers = {{"tsconfig.json", "package.json", "yarn.lock",
-                "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml"}, ".eslintrc", "eslint.json", "eslint.config.js", "eslint.config.mjs"},
-            root_dir = function (_, on_dir)
-                if vim.fs.root(0, {".eslintrc", "eslint.config.js","eslint.json", "eslint.config.mjs"}) then
+            init_options = {
+                enable = true,
+                lint = true,
+            },
+            root_markers = { { "tsconfig.json", "package.json", "yarn.lock",
+                "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml" }, ".eslintrc", "eslint.json", "eslint.config.js",
+                "eslint.config.mjs" },
+            root_dir = function(_, on_dir)
+                if vim.fs.root(0, { ".eslintrc", "eslint.config.js", "eslint.json", "eslint.config.mjs" }) then
                     on_dir(vim.fn.getcwd())
                 end
             end,
         })
 
         vim.lsp.config('lua_ls', {
-            capabilities = capabilities,
+            init_options = {
+                enable = true,
+                lint = true,
+            },
             settings = {
                 Lua = {
                     runtime = {
@@ -125,10 +154,14 @@ return {
                 }
             },
         })
+
         vim.lsp.config('clangd', {
             {
                 cmd = { "clangd", "--background-index", "--compile-commands-dir", "build" },
                 init_options = {
+
+                    enable = true,
+                    lint = true,
                     clangdFileStatus = true,
                     clangdSemanticHighlighting = true
                 },
@@ -144,7 +177,14 @@ return {
                 }
             }
         })
+
         vim.lsp.config('gopls', {
+            init_options = {
+                enable = true,
+                lint = true,
+                unstable = true,
+            },
+
             cmd = { "gopls" },
             filetypes = { "go", "gomod", "gowork", "gotmpl" },
             settings = {
@@ -157,17 +197,26 @@ return {
                 },
             },
         })
+
         vim.lsp.config('ruff', {
+            init_options = {
+                enable = true,
+                lint = true,
+            },
+
             filetypes = { "python", "jupyter" },
             settings = {
             },
         })
 
         vim.lsp.config('pylsp', {
+            init_options = {
+                enable = true,
+                lint = false,
+            },
             filetypes = { "python", "jupyter" },
             settings = {
             },
         })
-
     end,
 }

@@ -17,7 +17,6 @@ return {
         "leoluz/nvim-dap-go",
         -- python
         'mfussenegger/nvim-dap-python',
-        "linux-cultist/venv-selector.nvim",
         -- js
         "mxsdev/nvim-dap-vscode-js",
         {
@@ -91,7 +90,6 @@ return {
     config = function(_, opts)
         local dap = require('dap')
         local dapui = require('dapui')
-        local python_path = require("venv-selector").python()
         require('dap-go').setup()
 
      
@@ -117,19 +115,12 @@ return {
             -- online, please don't ask me how to install them :)
             ensure_installed = {
                 -- Update this to ensure that you have the debuggers for the langs you want
-                'python',
                 'php',
                 'node',
                 'elixir'
             },
         }
-        require('dap-python').setup('uv')
-        require('dap-python').resolve_python = function ()
-            return python_path
-        end
-
-
-
+       
         table.insert(require('dap').configurations.python, {
             name = "Pytest: Current File",
             type = "python",
@@ -178,6 +169,7 @@ return {
         --
 
         -- hotfix to enable python as a debugpy (VScode compatibility)        
+        dap.adapters.debugpy =  require('dap-python').setup('uv')
         dap.adapters.debugpy = dap.adapters.python
 
         dap.adapters.node = dap.adapters.node2

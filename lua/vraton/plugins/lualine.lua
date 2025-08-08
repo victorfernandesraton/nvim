@@ -12,11 +12,11 @@ return {
         require('lualine').setup({
             sections = {
                 lualine_a = { 'mode' },
-                lualine_b = { 'filename', 'diagnostics', 'diff'},
-                lualine_c = { 'branch',  },
+                lualine_b = { 'filename', 'diagnostics', 'diff' },
+                lualine_c = { 'branch', },
                 lualine_x = { 'encoding', 'filetype' },
-                lualine_y = {getrelativelines },
-                lualine_z = { "location", "progress"},
+                lualine_y = { getrelativelines },
+                lualine_z = { "location", "progress" },
             },
         })
     end
