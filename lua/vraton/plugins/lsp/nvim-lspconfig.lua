@@ -4,8 +4,6 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
         { "williamboman/mason-lspconfig.nvim" },
-        { "rafamadriz/friendly-snippets" },
-        { 'hrsh7th/cmp-nvim-lsp' },
     },
     config = function()
         -- my shotcuts
@@ -24,7 +22,6 @@ return {
         vim.api.nvim_create_autocmd('LspAttach', {
             callback = function(args)
                 local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-                local buffer = args.buf
                 -- Auto-format ("lint") on save.
                 -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
                 if client:supports_method('textDocument/formatting') then

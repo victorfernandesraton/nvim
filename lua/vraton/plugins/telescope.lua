@@ -42,7 +42,7 @@ return {
                     "--line-number",
                     "--column",
                     "--smart-case",
-                    "--no-ignore",
+                    "--hidden",
                 },
             },
         })
@@ -56,6 +56,9 @@ return {
         keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
         keymap.set('n', '<C-p>', builtin.find_files, { desc = 'Telescope find files' })
         keymap.set('n', '<C-f>', builtin.live_grep, { desc = 'Telescope live grep' })
+        keymap.set('n', '<leader>ff', function()
+            builtin.live_grep({ additional_args = { '--no-ignore' } })
+        end, { desc = 'Telescope live grep (ALL)' })
         keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
         keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
         keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = 'Telescope old files' })

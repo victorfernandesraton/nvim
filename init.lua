@@ -45,19 +45,15 @@ require("vraton.lazy")
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Reser search markup when go to nomral mode and press esc" })
 
 -- copy things from vim to my system
-vim.keymap.set("n", "<leader>y", "\"+ y")
-vim.keymap.set("v", "<leader>y", "\"+ y")
-vim.keymap.set("n", "<leader>y", "\"+ Y")
 
 -- select and move highlight lines
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 
 -- copy for external
-vim.keymap.set("n", "<leader>y", "\"+y")
-vim.keymap.set("v", "<leader>y", "\"+y")
-vim.keymap.set("n", "<leader>d", "\"_d")
-vim.keymap.set("v", "<leader>d", "\"_d")
+vim.keymap.set({'n', 'v', 'x'}, "<leader>y", "\"+y")
+vim.keymap.set({'n', 'v', 'x'},"<leader>d", "\"_d")
+
 -- window management
 vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })     -- split window vertically
 vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })   -- split window horizontally
@@ -82,7 +78,8 @@ end
 
 vim.keymap.set("n", "<leader>o", ":update<CR> :source<CR>", {desc = "Refresh"})
 
-vim.keymap.set("n", "<leader>ee", "<CMD>Oil<CR>", { desc = "Toggle file explorer" }) -- toggle file explorer
+vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>", { desc = "Toggle file explorer (OIL)" }) -- toggle file explorer
+vim.keymap.set("n", "<leader>E", ":Lexplore<CR>", { desc = "Toggle file explorer (netrw)" }) -- toggle file explorer
 
 -- vim.keymap.set("n", "<leader>ec", "<cmd>NvimTreeCollapse<CR>", { desc = "Collapse file explorer" }) -- collapse file explorer
 -- vim.keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh file explorer" })   -- refresh file explorer

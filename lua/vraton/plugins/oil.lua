@@ -4,7 +4,7 @@ return {
 
         default_file_explorer = false,
         use_default_keymaps = false,
-        show_hidden = false,
+        show_hidden = true,
 
         keymaps = {
             ["g?"] = { "actions.show_help", mode = "n" },
