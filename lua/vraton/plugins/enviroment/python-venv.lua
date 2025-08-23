@@ -1,5 +1,5 @@
 return {
-  'linux-cultist/venv-selector.nvim',
+  "linux-cultist/venv-selector.nvim",
   dependencies = {
     "neovim/nvim-lspconfig",
     "mfussenegger/nvim-dap", "mfussenegger/nvim-dap-python", --optional
@@ -8,7 +8,9 @@ return {
   lazy = false,
   branch = "regexp", -- This is the regexp branch, use this for the new version
   keys = {
-    -- Keymap to open VenvSelector to pick a venv.
-    { '<leader>vs', '<cmd>VenvSelect<cr>' },
+    { "<leader>vs", "<cmd>VenvSelect<cr>" },
+  },
+  opts = {
+    -- Your settings go here
   },
 }

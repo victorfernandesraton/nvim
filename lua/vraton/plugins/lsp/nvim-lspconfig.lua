@@ -35,7 +35,7 @@ return {
                 end
                 -- fix completion 
                 if client:supports_method('textDocument/completion') then
-                    vim.lsp.completion.enable(true, client.id, args.buf, {autotrigger = true})
+                    vim.lsp.completion.enable(true, client.id, args.buf, {autotrigger = false})
                 end
 
                 -- Optional: echo server name when attached
@@ -217,6 +217,9 @@ return {
             },
             filetypes = { "python", "jupyter" },
             settings = {
+                pylsp = {
+                    skip_token_initialization = true,
+                }
             },
         })
     end,

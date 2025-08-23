@@ -8,9 +8,9 @@ local result = {
     config = function()
         require("codesnap").setup({
             save_path = "~/Pictures",
-            has_breadcrumbs = true,
+            has_breadcrumbs = false,
             has_line_number = true,
-            show_workspace = true,
+            show_workspace = false,
             watermark = "",
             bg_color = "#535c68",
             title = "vraton.dev from CodeSnap.nvim",

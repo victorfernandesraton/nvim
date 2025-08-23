@@ -7,7 +7,7 @@ return {
         -- https://github.com/mfussenegger/nvim-dap
         'mfussenegger/nvim-dap',
 
-        { "williamboman/mason.nvim", opts = { PATH = "append" } },
+        { "williamboman/mason.nvim",      opts = { PATH = "append" } },
         -- https://github.com/theHamsta/nvim-dap-virtual-text
         'theHamsta/nvim-dap-virtual-text',   -- inline variable text while debugging
         -- https://github.com/nvim-telescope/telescope-dap.nvim
@@ -15,8 +15,8 @@ return {
         "jay-babu/mason-nvim-dap.nvim",
         -- golang
         "leoluz/nvim-dap-go",
-        -- python
-        'mfussenegger/nvim-dap-python',
+        -- python Usando commit pra evitar crashe
+        { 'mfussenegger/nvim-dap-python', commit = "eafd6d3b6175b6f7e5ecaadbcf604a1bb7419351" },
         -- js
         "mxsdev/nvim-dap-vscode-js",
         {
@@ -92,7 +92,7 @@ return {
         local dapui = require('dapui')
         require('dap-go').setup()
 
-     
+
         require('mason-nvim-dap').setup {
             -- Makes a best effort to setup the various debuggers with
             -- reasonable debug configurations
@@ -117,28 +117,37 @@ return {
                 -- Update this to ensure that you have the debuggers for the langs you want
                 'php',
                 'node',
-                'elixir'
+                'elixir',
+                'python'
             },
         }
-       
-        table.insert(require('dap').configurations.python, {
-            name = "Pytest: Current File",
-            type = "python",
-            request = "launch",
-            module = "pytest",
-            args = {
-                "${file}",
-            },
-            console = "integratedTerminal",
-        })
 
-        table.insert(require('dap').configurations.python, {
-            name = "Python: Current File",
-            type = "python",
-            request = "launch",
-            program = "${file}",
-            console = "integratedTerminal",
-        })
+        -- table.insert(require('dap').configurations.python, {
+        --     name = "Pytest: Current File",
+        --     type = "python",
+        --     request = "launch",
+        --     module = "pytest",
+        --     args = {
+        --         "${file}",
+        --     },
+        --     console = "integratedTerminal",
+        -- })
+        --
+        -- table.insert(require('dap').configurations.python, {
+        --     name = "Python: Current File",
+        --     type = "python",
+        --     request = "launch",
+        --     program = "${file}",
+        --     console = "integratedTerminal",
+        -- })
+        -- table.insert(require('dap').configurations.python, {
+        --     name = "Unittest: Current File",
+        --     type = "python",
+        --     request = "launch",
+        --     module = "unittest",
+        --     args = { "${file}" },
+        --     console = "integratedTerminal",
+        -- })
 
 
         -- -- Elixir mix
@@ -168,10 +177,10 @@ return {
         -- })
         --
 
-        -- hotfix to enable python as a debugpy (VScode compatibility)        
-        dap.adapters.debugpy =  require('dap-python').setup('uv')
+        -- hotfix to enable python as a debugpy (VScode compatibility)
+        --
+        require('dap-python').setup('uv')
         dap.adapters.debugpy = dap.adapters.python
-
         dap.adapters.node = dap.adapters.node2
 
         local keymap = vim.keymap
