@@ -53,7 +53,7 @@ return {
         local keymap = vim.keymap -- for conciseness
 
         local builtin = require('telescope.builtin')
-        keymap.set("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
+        keymap.set("n", "<leader>fT", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
         keymap.set('n', '<C-p>', builtin.find_files, { desc = 'Telescope find files' })
         keymap.set('n', '<C-f>', builtin.live_grep, { desc = 'Telescope live grep' })
         keymap.set('n', '<leader>ff', function()

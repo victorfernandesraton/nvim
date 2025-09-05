@@ -18,6 +18,7 @@ return {
             vim.keymap.set("n", "<leader>gff", ":G fetch<CR>", { desc = "Fugitive: git fetch" })
             vim.keymap.set("n", "<leader>gll", ":G pull<CR>", { desc = "Fugitive: git pull" })
             vim.keymap.set("n", "<leader>gtt", ":GcLog<CR>", { desc = "Fugitive: view git grapth" })
+            vim.keymap.set("n", "<leader>gtT", ":G log --<CR>", { desc = "Fugitive: view git grapth" })
         end
     },
 }
