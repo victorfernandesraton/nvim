@@ -10,6 +10,7 @@ return {
         vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, { desc = "Goto definition" })
         vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, { desc = "Goto implementation" })
         vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP hover" })
+        vim.keymap.set("n", "<leader>k", vim.lsp.buf.signature_help, { desc = "LSP hover signature_help" })
         vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end,
             { desc = "Search workspace_symbol" })
         vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, { desc = "Open float diagnostic" })
@@ -32,14 +33,32 @@ return {
                 -- fix hoover when not work
                 if not client:supports_method('textDocument/hover') then
                     vim.notify('LSP not support hover ' .. client.name, vim.log.levels.INFO, { title = 'LSP' })
+                    -- Continue execution even if hover isn't supported
                 end
                 -- fix completion 
                 if client:supports_method('textDocument/completion') then
-                    vim.lsp.completion.enable(true, client.id, args.buf, {autotrigger = false})
+                    vim.opt.completeopt = { 'menu', 'menuone', 'noinsert', 'fuzzy', 'popup' }
+                    vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+                    -- remapenado para navegar no autocomplete
+                    -- sendo ctrl + j para descer e ctrl + k para subir
+                    vim.keymap.set('i', '<C-j>', function()
+                        return vim.fn.pumvisible() == 1 and '<C-n>' or '<C-j>'
+                    end, { expr = true, silent = true , desc="Move down in autocomplete"})
+                    vim.keymap.set('i', '<C-k>', function()
+                        return vim.fn.pumvisible() == 1 and '<C-p>' or '<C-k>'
+                    end, { expr = true, silent = true , desc = "Move up in autocomplete"})
+                    -- atalho para abrir o autocomplete ctrl + Space
+                    vim.keymap.set('i', '<C-Space>', function()
+                        vim.lsp.completion.get()
+                    end)
+                end
+                if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
                 end
 
                 -- Optional: echo server name when attached
-                vim.notify('LSP attached: ' .. client.name, vim.log.levels.INFO, { title = 'LSP' })
+               -- vim.notify('LSP attached: ' .. client.name, vim.log.levels.INFO, { title = 'LSP' })
+
+                -- vim.diagnostic.config({virtual_lines = true})
             end,
         })
 
@@ -94,7 +113,8 @@ return {
             },
             settings = {}
         })
-
+        vim.lsp.enable('elixirls')
+        --
         vim.lsp.config('denols', {
             init_options = {
                 enable = true,
@@ -110,7 +130,8 @@ return {
             single_file_support = false,
             settings = {},
         })
-
+        vim.lsp.enable('denols')
+        --
         vim.lsp.config('ts_ls', {
             init_options = {
                 enable = true,
@@ -124,6 +145,7 @@ return {
             end,
         })
 
+        vim.lsp.enable('ts_ls')
         vim.lsp.config('eslint', {
             init_options = {
                 enable = true,
@@ -138,6 +160,8 @@ return {
                 end
             end,
         })
+
+        vim.lsp.enable('eslint')
 
         vim.lsp.config('lua_ls', {
             init_options = {
@@ -155,30 +179,8 @@ return {
                 }
             },
         })
-
-        vim.lsp.config('clangd', {
-            {
-                cmd = { "clangd", "--background-index", "--compile-commands-dir", "build" },
-                init_options = {
-
-                    enable = true,
-                    lint = true,
-                    clangdFileStatus = true,
-                    clangdSemanticHighlighting = true
-                },
-                filetypes = { "c", "cpp", "cxx", "cc" },
-                root_dir = function()
-                    return vim.fn.getcwd()
-                end,
-                settings = {
-                    ["clangd"] = {
-                        ["compilationDatabasePath"] = "build",
-                        ["fallbackFlags"] = { "-std=c++17" }
-                    }
-                }
-            }
-        })
-
+        vim.lsp.enable('lua_ls')
+        vim.lsp.enable('clangd')
         vim.lsp.config('gopls', {
             init_options = {
                 enable = true,
@@ -198,7 +200,8 @@ return {
                 },
             },
         })
-
+        vim.lsp.enable('gopls')
+        --
         vim.lsp.config('ruff', {
             init_options = {
                 enable = true,
@@ -209,6 +212,7 @@ return {
             settings = {
             },
         })
+        vim.lsp.enable('ruff')
 
         vim.lsp.config('pylsp', {
             init_options = {
@@ -222,5 +226,6 @@ return {
                 }
             },
         })
+        vim.lsp.enable('pylsp')
     end,
 }

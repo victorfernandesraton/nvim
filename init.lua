@@ -51,6 +51,8 @@ vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 -- copy for external
 vim.keymap.set({ 'n', 'v', 'x' }, "<leader>y", "\"+y")
 vim.keymap.set({ 'n', 'v', 'x' }, "<leader>d", "\"_d")
+vim.keymap.set('i', '<C-Space>', '<C-x><C-o>')
+vim.keymap.set('i', '<C-@>', '<C-x><C-o>')
 
 -- window management
 vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })   -- split window vertically
