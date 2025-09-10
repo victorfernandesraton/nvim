@@ -26,7 +26,7 @@ return {
     },
     opts = {
         controls = {
-            element = "repl",
+            element = "console",
             enabled = true,
             icons = {
                 disconnect = "",
@@ -68,7 +68,6 @@ return {
             {
                 elements = {
                     "console",
-                    "repl",
                 },
                 size = 10,
                 position = "bottom", -- Can be "bottom" or "top"

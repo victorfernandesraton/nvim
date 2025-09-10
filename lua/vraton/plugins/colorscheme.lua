@@ -1,23 +1,30 @@
 return {
-    "neanias/everforest-nvim",
+    -- "neanias/everforest-nvim",
     -- "rose-pine/neovim",
     -- "ellisonleao/gruvbox.nvim",
-    priority = 1000,
-    config = function()
-        local everforest = require("everforest")
-        everforest.setup({
-            background = "hard",
-            transparent_background_level = 1,
-            italics = false,
-            disable_italic_comments = false,
-            dim_inactive_windows = true
-        })
+    -- priority = 1000,
+    -- version = false,
+    -- lazy = false,
+    -- config = function()
+        -- local everforest = require("everforest")
+        --
+        -- everforest.setup({
+        --     background = "hard",
+        --     transparent_background_level = 1,
+        --     italics = false,
+        --     disable_italic_comments = false,
+        --     diagnostic_text_highlight = false,
+        --     dim_inactive_windows = false,
+        --     inlay_hints_background = "none",
+        --     spell_foreground = true
+        -- })
+        -- everforest.load()
         -- require("rose-pine").setup({
-        --     dim_inactive_windows = true,
-        --     extend_background_behind_borders = true,
+        --     dim_inactive_windows = false,
+        --     extend_background_behind_borders = false,
         --     enable = {
         --         terminal = false,
-        --         legacy_highlights = false, -- Improve compatibility for previous versions of Neovim
+        --         legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
         --         migrations = true,        -- Handle deprecated options automatically
         --     },
         --
@@ -25,22 +32,27 @@ return {
         --         bold = true,
         --         italic = false,
         --         transparency = true,
-        --     },
-        --     highlight_groups = {
-        --         NormalFloat = { bg = "none" },
-        --         Normal = { bg = 'none' },
-        --         -- Pmenu = {bg = 'none'},
-        --         -- FloatBorder = {bg = 'none'}
-        --     },
+        --     }
+        -- })
+        -- vim.cmd("colorscheme rose-pine")
+        -- require("gruvbox").setup({
+        --     terminal_colors = true, -- add neovim terminal colors
+        --     undercurl = true,
+        --     underline = true,
+        --     bold = true,
+        --     strikethrough = false,
+        --     invert_selection = true,
+        --     invert_signs = false,
+        --     invert_tabline = true,
+        --     inverse = true, -- invert background for search, diffs, statuslines and errors
+        --     -- contrast = "hard", -- can be "hard", "soft" or empty string
+        --     palette_overrides = {},
+        --     overrides = {},
+        --     dim_inactive = false,
+        --     transparent_mode = true,
         --
         -- })
         -- vim.cmd("colorscheme gruvbox")
-        -- vim.cmd("colorscheme rose-pine")
-        -- vim.cmd("colorscheme everforest")
-        everforest.load()
-        -- vim.api.nvim_set_hl(0, 'Normal', { bg = 'none' })
-        -- vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'none' })
-        -- vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'none' })
-        -- vim.api.nvim_set_hl(0, 'Pmenu', { bg = 'none' })
-    end
+        -- return {}
+    -- end
 }

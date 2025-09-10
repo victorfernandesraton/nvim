@@ -103,7 +103,7 @@ return {
             },
             root_dir = function(_, on_dir)
                 -- TODO: para lidar com deno usando por default projetos que não possuem isso aqui
-                if not vim.fs.root(0, { 'tsconfig.json', 'package.json', 'yarn.lock' }) then
+                if not vim.fs.root(0, { 'package.json', 'yarn.lock' }) then
                     on_dir(vim.fn.getcwd())
                 end
             end,
@@ -118,7 +118,7 @@ return {
             root_markers = { "tsconfig.json", "package.json", "yarn.lock",
                 "lerna.json", "pnpm-lock.yaml", "pnpm-workspace.yaml" },
             root_dir = function(_, on_dir)
-                if vim.fs.root(0, { 'tsconfig.json', "package.json", "yarn.lock" }) then
+                if vim.fs.root(0, { 'tsconfig.json' }) then
                     on_dir(vim.fn.getcwd())
                 end
             end,

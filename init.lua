@@ -8,14 +8,12 @@ vim.o.undofile = true
 vim.o.hlsearch = true
 vim.o.incsearch = true
 
-vim.o.termguicolors = true
 
 vim.o.nu = true
 vim.o.relativenumber = true
 vim.o.scrolloff = 4
 vim.o.colorcolumn = "80"
 vim.o.updatetime = 50
-vim.o.signcolumn = "yes"
 
 
 vim.o.cursorline = true
@@ -25,6 +23,9 @@ vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.background = "dark" -- colorschemes that can be light or dark will be made dark
 vim.o.signcolumn = "yes"  -- show sign column so that text doesn't shift
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+
 
 -- split windows
 vim.o.splitright = true -- split vertical window to the right
