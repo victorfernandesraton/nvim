@@ -23,9 +23,9 @@ vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.background = "dark" -- colorschemes that can be light or dark will be made dark
 vim.o.signcolumn = "yes"  -- show sign column so that text doesn't shift
--- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "DapStopped", { bg = "#565a60" })
 -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-
 
 -- split windows
 vim.o.splitright = true -- split vertical window to the right
@@ -49,19 +49,14 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 
 -- copy for external
-vim.keymap.set({'n', 'v', 'x'}, "<leader>y", "\"+y")
-vim.keymap.set({'n', 'v', 'x'},"<leader>d", "\"_d")
+vim.keymap.set({ 'n', 'v', 'x' }, "<leader>y", "\"+y")
+vim.keymap.set({ 'n', 'v', 'x' }, "<leader>d", "\"_d")
 
 -- window management
-vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })     -- split window vertically
-vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })   -- split window horizontally
-vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })      -- make split windows equal width & height
-vim.keymap.set("n", "<C-c>", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
-
--- Toggle between relative and absolute line numbers
-vim.keymap.set('n', '<leader>ln', ':lua ToggleLineNumbers()<CR>', { noremap = true, silent = true })
-
-vim.keymap.set('n', '<leader>q', ':quit<CR>', { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })   -- split window vertically
+vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
+vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })    -- make split windows equal width & height
+vim.keymap.set("n", "<C-c>", "<cmd>close<CR>", { desc = "Close current split" })    -- close current split window
 
 -- Define the function to toggle line numbers
 function ToggleLineNumbers()
@@ -74,13 +69,18 @@ function ToggleLineNumbers()
     end
 end
 
-vim.keymap.set("n", "<leader>o", ":update<CR> :source<CR>", {desc = "Refresh"})
+-- Toggle between relative and absolute line numbers
+vim.keymap.set('n', '<leader>ln', ':lua ToggleLineNumbers()<CR>', { noremap = true, silent = true })
+vim.keymap.set('n', '<leader>q', ':quit<CR>', { noremap = true, silent = true })
 
-vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>", { desc = "Toggle file explorer (OIL)" }) -- toggle file explorer
+
+vim.keymap.set("n", "<leader>o", ":update<CR> :source<CR>", { desc = "Refresh" })
+
+vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>", { desc = "Toggle file explorer (OIL)" })    -- toggle file explorer
 vim.keymap.set("n", "<leader>E", ":Lexplore<CR>", { desc = "Toggle file explorer (netrw)" }) -- toggle file explorer
 
 -- vim.keymap.set("n", "<leader>ec", "<cmd>NvimTreeCollapse<CR>", { desc = "Collapse file explorer" }) -- collapse file explorer
 -- vim.keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh file explorer" })   -- refresh file explorer
 --
-vim.keymap.set('n', '<leader>bn', ':bnext<CR>', { silent = true, desc= "Toggle Buffer next" })
-vim.keymap.set('n', '<leader>bp', ':bprev<CR>', { silent = true, desc= "Toggle Buffer previous" })
+vim.keymap.set('n', '<leader>bn', ':bnext<CR>', { silent = true, desc = "Toggle Buffer next" })
+vim.keymap.set('n', '<leader>bp', ':bprev<CR>', { silent = true, desc = "Toggle Buffer previous" })

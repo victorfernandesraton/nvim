@@ -233,5 +233,7 @@ return {
             -- Commented to prevent DAP UI from closing when unit tests finish
             -- require('dapui').close()
         end
+        local sign = vim.fn.sign_define
+        sign('DapStopped', { text = '', texthl = 'DapStopped', linehl = 'DapStopped', numhl = 'DapStopped' })
     end
 }
