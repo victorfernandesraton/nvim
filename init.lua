@@ -23,16 +23,13 @@ vim.o.cursorline = true
 vim.o.termguicolors = true
 vim.o.background = "dark" -- colorschemes that can be light or dark will be made dark
 vim.o.signcolumn = "yes"  -- show sign column so that text doesn't shift
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+-- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
 
 -- split windows
 vim.o.splitright = true -- split vertical window to the right
 vim.o.splitbelow = true -- split horizontal window to the bottom
-
--- add border in windonws
-vim.o.winborder = "rounded"
 
 -- turn off swapfile
 vim.o.swapfile = false

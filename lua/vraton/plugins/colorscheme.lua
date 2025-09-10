@@ -1,24 +1,24 @@
 return {
-    -- "neanias/everforest-nvim",
+    "neanias/everforest-nvim",
     -- "rose-pine/neovim",
     -- "ellisonleao/gruvbox.nvim",
-    -- priority = 1000,
-    -- version = false,
-    -- lazy = false,
-    -- config = function()
-        -- local everforest = require("everforest")
-        --
-        -- everforest.setup({
-        --     background = "hard",
-        --     transparent_background_level = 1,
-        --     italics = false,
-        --     disable_italic_comments = false,
-        --     diagnostic_text_highlight = false,
-        --     dim_inactive_windows = false,
-        --     inlay_hints_background = "none",
-        --     spell_foreground = true
-        -- })
-        -- everforest.load()
+    priority = 1000,
+    version = false,
+    lazy = false,
+    config = function()
+        local everforest = require("everforest")
+
+        everforest.setup({
+            background = "hard",
+            transparent_background_level = 1,
+            italics = false,
+            disable_italic_comments = false,
+            diagnostic_text_highlight = false,
+            dim_inactive_windows = false,
+            inlay_hints_background = "none",
+            spell_foreground = true
+        })
+        everforest.load()
         -- require("rose-pine").setup({
         --     dim_inactive_windows = false,
         --     extend_background_behind_borders = false,
@@ -54,5 +54,5 @@ return {
         -- })
         -- vim.cmd("colorscheme gruvbox")
         -- return {}
-    -- end
+    end
 }
