@@ -1,7 +1,7 @@
 return {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
-    
+
     config = function()
         local function getrelativelines()
             if vim.wo.relativenumber then
@@ -30,7 +30,7 @@ return {
             sections = {
                 lualine_a = { 'filename' },
                 lualine_b = { 'diagnostics' },
-                lualine_c = {  },
+                lualine_c = {},
                 lualine_x = { 'encoding', 'filetype' },
                 lualine_y = { "location" },
                 lualine_z = { "progress" },
@@ -38,7 +38,7 @@ return {
             tabline = {
                 lualine_a = { 'mode' },
                 lualine_b = { 'branch', "diff" },
-                lualine_c = {getLsps},
+                lualine_c = { getLsps },
                 lualine_x = {},
                 lualine_y = { getrelativelines },
                 lualine_z = {}

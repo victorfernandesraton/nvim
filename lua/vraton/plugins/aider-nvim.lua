@@ -10,9 +10,6 @@ return {
         { "<leader>a+", "<cmd>Aider add<cr>", desc = "Add File" },
         { "<leader>a-", "<cmd>Aider drop<cr>", desc = "Drop File" },
         { "<leader>ar", "<cmd>Aider add readonly<cr>", desc = "Add Read-Only" },
-        -- Example nvim-tree.lua integration if needed
-        { "<leader>a+", "<cmd>AiderTreeAddFile<cr>", desc = "Add File from Tree to Aider", ft = "NvimTree" },
-        { "<leader>a-", "<cmd>AiderTreeDropFile<cr>", desc = "Drop File from Tree from Aider", ft = "NvimTree" },
     },
     dependencies = {
         "folke/snacks.nvim",
@@ -21,7 +18,6 @@ return {
     opts = {
         win = {
             wo = { winbar = "Aider" },
-            style = "nvim_aider",
             position = "float",  -- you can change this to "bottom", "top", or "left" if you like
         },
     },

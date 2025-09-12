@@ -6,7 +6,8 @@ return {
         -- Display debug text as a comment
         commented = true,
         -- Customize virtual text
-        display_callback = function(variable, buf, stackframe, _node, options)
+        ---@diagnostic disable-next-line: unused-local
+        display_callback = function(variable, _buf, _stackframe, _node, options)
             if options.virt_text_pos == 'inline' then
                 return ' = ' .. variable.value
             else
