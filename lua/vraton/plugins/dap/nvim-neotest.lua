@@ -10,7 +10,7 @@ return {
         "nvim-neotest/neotest-go",
         'nvim-neotest/neotest-jest',
         "fredrikaverpil/neotest-golang", -- Installation
-        "jfpedroza/neotest-elixir",
+        -- "jfpedroza/neotest-elixir",
 
     },
     config = function()
@@ -45,9 +45,9 @@ return {
                         return vim.fn.getcwd()
                     end,
                 }),
-                require("neotest-elixir")({
-                     args = {"--trace"}
-                }),
+                -- require("neotest-elixir")({
+                --      args = {"--trace"}
+                -- }),
             }
         })
 

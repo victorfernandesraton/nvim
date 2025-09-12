@@ -14,8 +14,6 @@ vim.o.relativenumber = true
 vim.o.scrolloff = 4
 vim.o.colorcolumn = "80"
 vim.o.updatetime = 50
-
-
 vim.o.cursorline = true
 
 -- turn on termguicolors for tokyonight colorscheme to work
@@ -76,7 +74,9 @@ vim.keymap.set('n', '<leader>ln', ':lua ToggleLineNumbers()<CR>', { noremap = tr
 vim.keymap.set('n', '<leader>q', ':quit<CR>', { noremap = true, silent = true })
 
 
-vim.keymap.set("n", "<leader>o", ":update<CR> :source<CR>", { desc = "Refresh" })
+vim.keymap.set("n", "<leader>o", ":update<CR> :source<CR>", { desc = "Refresh for current file" })
+
+vim.keymap.set("n", "<leader>so", ":so ~/.config/nvim/init.lua<CR>", { desc = "Reload all config" })
 
 vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>", { desc = "Toggle file explorer (OIL)" })    -- toggle file explorer
 vim.keymap.set("n", "<leader>E", ":Lexplore<CR>", { desc = "Toggle file explorer (netrw)" }) -- toggle file explorer

@@ -116,7 +116,7 @@ return {
                 -- Update this to ensure that you have the debuggers for the langs you want
                 'php',
                 'node',
-                'elixir',
+                -- 'elixir',
                 'python'
             },
         }

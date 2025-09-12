@@ -3,9 +3,9 @@ return {
     config = function()
         require('nvim-treesitter.configs').setup {
             ensure_installed = {
-                "elixir",
-                "heex",
-                "eex",
+                -- "elixir",
+                -- "heex",
+                -- "eex",
                 'vim',
                 'vimdoc',
                 'lua',
@@ -14,6 +14,7 @@ return {
                 'javascript',
                 'css',
                 'go',
+                'rust',
                 "html"
             },
 
