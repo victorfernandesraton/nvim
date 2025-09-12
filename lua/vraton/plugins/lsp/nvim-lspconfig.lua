@@ -10,8 +10,10 @@ return {
         vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end,
             { desc = "Search workspace_symbol" })
         vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, { desc = "Open float diagnostic" })
-        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, { desc = "Goto next diagnostic" })
-        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, { desc = "Goto prev diagnostic" })
+        vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = 1, float = true }) end,
+            { desc = "Goto next diagnostic" })
+        vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = -1, float = true }) end,
+            { desc = "Goto prev diagnostic" })
         vim.keymap.set("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code action" })
         vim.keymap.set("n", "<leader>rr", function() vim.lsp.buf.references() end, { desc = "References" })
         vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, { desc = "Rename similars" })
@@ -54,7 +56,6 @@ return {
                     vim.api.nvim_set_keymap('i', '<CR>', 'pumvisible() ? "<C-y>" : "<CR>"',
                         { expr = true, noremap = true, silent = true })
                 else
-                
                     vim.notify('LSP not support completion ' .. client.name, vim.log.levels.INFO, { title = 'LSP' })
                     -- Continue execution even if hover isn't supported
                 end
@@ -213,7 +214,7 @@ return {
                         arguments = {
                             {
                                 uri = vim.uri_from_bufnr(bufnr),
-                                version = lsp.util.buf_versions[bufnr],
+                                version = vim.lsp.util.buf_versions[bufnr],
                             },
                         },
                     }, nil, bufnr)
@@ -312,14 +313,6 @@ return {
                         uri = root_dir,
                         name = vim.fn.fnamemodify(root_dir, ':t'),
                     }
-
-                    -- Support Yarn2 (PnP) projects
-                    local pnp_cjs = root_dir .. '/.pnp.cjs'
-                    local pnp_js = root_dir .. '/.pnp.js'
-                    if vim.uv.fs_stat(pnp_cjs) or vim.uv.fs_stat(pnp_js) then
-                        local cmd = config.cmd
-                        config.cmd = vim.list_extend({ 'yarn', 'exec' }, cmd)
-                    end
                 end
             end,
             handlers = {
@@ -376,7 +369,8 @@ return {
                     workspace = {
                         checkThirdParty = true,
                         library = {
-                            vim.env.VIMRUNTIME
+                            vim.env.VIMRUNTIME,
+                            { path = "${3rd}/luv/library", words = { "vim%.uv" } },
                         }
                     }
                 })

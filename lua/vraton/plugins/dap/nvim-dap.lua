@@ -7,7 +7,7 @@ return {
         -- https://github.com/mfussenegger/nvim-dap
         'mfussenegger/nvim-dap',
 
-        { "williamboman/mason.nvim",      opts = { PATH = "append" } },
+        { "williamboman/mason.nvim", opts = { PATH = "append" } },
         -- https://github.com/theHamsta/nvim-dap-virtual-text
         'theHamsta/nvim-dap-virtual-text',   -- inline variable text while debugging
         -- https://github.com/nvim-telescope/telescope-dap.nvim
@@ -16,7 +16,8 @@ return {
         -- golang
         "leoluz/nvim-dap-go",
         -- python Usando commit pra evitar crashe
-        { 'mfussenegger/nvim-dap-python', commit = "eafd6d3b6175b6f7e5ecaadbcf604a1bb7419351" },
+        -- { 'mfussenegger/nvim-dap-python', commit = "eafd6d3b6175b6f7e5ecaadbcf604a1bb7419351" },
+        { 'Diaoul/nvim-dap-python',  branch = 'fix-empty-env-table' },
         -- js
         "mxsdev/nvim-dap-vscode-js",
         {
