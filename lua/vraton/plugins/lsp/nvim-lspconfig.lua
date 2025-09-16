@@ -179,7 +179,7 @@ return {
                     },
                 },
             },
-            filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+            filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact'},
         })
         vim.lsp.config('ts_ls', {
             cmd = { 'typescript-language-server', '--stdio' },

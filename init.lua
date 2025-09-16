@@ -22,7 +22,6 @@ vim.o.termguicolors = true
 vim.o.background = "dark" -- colorschemes that can be light or dark will be made dark
 vim.o.signcolumn = "yes"  -- show sign column so that text doesn't shift
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
-vim.api.nvim_set_hl(0, "DapStopped", { bg = "#565a60" })
 -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
 -- split windows
@@ -38,7 +37,7 @@ vim.g.netrw_keepdir = 1
 require("vraton.lazy")
 
 -- clear search
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Reser search markup when go to nomral mode and press esc" })
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Reset search markup when go to normal mode and press esc" })
 
 -- copy things from vim to my system
 
@@ -81,8 +80,5 @@ vim.keymap.set("n", "<leader>so", ":so ~/.config/nvim/init.lua<CR>", { desc = "R
 vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>", { desc = "Toggle file explorer (OIL)" })    -- toggle file explorer
 vim.keymap.set("n", "<leader>E", ":Lexplore<CR>", { desc = "Toggle file explorer (netrw)" }) -- toggle file explorer
 
--- vim.keymap.set("n", "<leader>ec", "<cmd>NvimTreeCollapse<CR>", { desc = "Collapse file explorer" }) -- collapse file explorer
--- vim.keymap.set("n", "<leader>er", "<cmd>NvimTreeRefresh<CR>", { desc = "Refresh file explorer" })   -- refresh file explorer
---
 vim.keymap.set('n', '<leader>bn', ':bnext<CR>', { silent = true, desc = "Toggle Buffer next" })
 vim.keymap.set('n', '<leader>bp', ':bprev<CR>', { silent = true, desc = "Toggle Buffer previous" })

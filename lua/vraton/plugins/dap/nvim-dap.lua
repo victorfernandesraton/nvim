@@ -6,7 +6,6 @@ return {
     dependencies = {
         -- https://github.com/mfussenegger/nvim-dap
         'mfussenegger/nvim-dap',
-
         { "williamboman/mason.nvim", opts = { PATH = "append" } },
         -- https://github.com/theHamsta/nvim-dap-virtual-text
         'theHamsta/nvim-dap-virtual-text',   -- inline variable text while debugging
@@ -16,8 +15,8 @@ return {
         -- golang
         "leoluz/nvim-dap-go",
         -- python Usando commit pra evitar crashe
-        -- { 'mfussenegger/nvim-dap-python', commit = "eafd6d3b6175b6f7e5ecaadbcf604a1bb7419351" },
-        { 'Diaoul/nvim-dap-python',  branch = 'fix-empty-env-table' },
+        { 'mfussenegger/nvim-dap-python'},
+        -- { 'Diaoul/nvim-dap-python',  branch = 'fix-empty-env-table' },
         -- js
         "mxsdev/nvim-dap-vscode-js",
         {
@@ -215,6 +214,43 @@ return {
         keymap.set("n", '<leader>de', function() require('telescope.builtin').diagnostics({ default_text = ":E:" }) end)
 
 
+        vim.api.nvim_set_hl(0, "DapBreakpoint", { bg = "NvimDarkGray4" })
+        vim.api.nvim_set_hl(0, "blue", { fg = "NvimLightBlue" })
+        vim.api.nvim_set_hl(0, "green", { fg = "NvimLightGreen" })
+        vim.api.nvim_set_hl(0, "yellow", { fg = "NvimLightYellow" })
+        vim.api.nvim_set_hl(0, "orange", { fg = "NvimLightRed" })
+        local sign = vim.fn.sign_define
+        sign('DapBreakpoint', {
+            text = '',
+            texthl = 'blue',
+            linehl = 'DapBreakpoint',
+            numhl = 'blue'
+        })
+        sign('DapBreakpointCondition', {
+            text = 'ﳁ',
+            texthl = 'blue',
+            linehl = 'DapBreakpoint',
+            numhl = 'blue'
+        })
+        sign('DapBreakpointRejected', {
+            text = '',
+            texthl = 'orange',
+            linehl = 'DapBreakpoint',
+            numhl = 'orange'
+        })
+        sign('DapStopped', {
+            text = '',
+            texthl = 'green',
+            linehl = 'DapBreakpoint',
+            numhl = 'green'
+        })
+        sign('DapLogPoint', {
+            text = '•',
+            texthl = 'yellow',
+            linehl = 'DapBreakpoint',
+            numhl ='yellow'
+        })
+
 
         dapui.setup(opts)
 
@@ -234,7 +270,6 @@ return {
             -- Commented to prevent DAP UI from closing when unit tests finish
             -- require('dapui').close()
         end
-        local sign = vim.fn.sign_define
-        sign('DapStopped', { text = '', texthl = 'DapStopped', linehl = 'DapStopped', numhl = 'DapStopped' })
+
     end
 }
