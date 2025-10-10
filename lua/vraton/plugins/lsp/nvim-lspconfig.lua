@@ -107,7 +107,8 @@ return {
                 'bashls',
                 "eslint",
                 "vue_ls",
-                "jsonls"
+                "jsonls",
+                "ltex"
             }
         })
         vim.lsp.config('marksman', {
@@ -179,7 +180,7 @@ return {
                     },
                 },
             },
-            filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact'},
+            filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact' },
         })
         vim.lsp.config('ts_ls', {
             cmd = { 'typescript-language-server', '--stdio' },
@@ -400,17 +401,18 @@ return {
             settings = {
             },
         })
-
-        vim.lsp.config('pylsp', {
-            cmd = { 'pylsp' },
-            filetypes = { "python", "jupyter" },
+        vim.lsp.config('pyright', {
+            cmd = { 'pyright-langserver', '--stdio' },
+            filetypes = { 'python' },
+            root_markers = { 'pyproject.toml', 'setup.py', '.git' },
             settings = {
-                pylsp = {
-                    skip_token_initialization = true,
-                    plugins = {
-                        pyflakes = { enabled = false },
-                        pycodestyle = { enabled = false }
-                    }
+                python = {
+                    analysis = {
+                        autoSearchPaths = true,
+                        reportImportCycles= true,
+                        useLibraryCodeForTypes = true,
+                        disableOrganizeImports = true
+                    },
                 },
             },
         })
@@ -460,6 +462,22 @@ return {
             root_markers = { '.git' },
         })
 
+        vim.lsp.config('ltex', {
+            filetypes = { "latex", "tex", "bib" },
+            settings = {
+                ltex = {
+                    enabled = { "latex", "tex", "bib" }
+                },
+                language = "auto",
+                diagnosticSeverity = "information",
+                sentenceCacheSize = 2000,
+                additionalRules = {
+                    enablePickyRules = true,
+                    motherTongue = "pt-BR",
+                },
+            }
+        })
+
 
         vim.lsp.enable({
             'denols',
@@ -468,14 +486,15 @@ return {
             "cssls",
             "lua_ls",
             "ruff",
-            "pylsp",
+            "pyright",
             "gopls",
             'sqls',
             'bashls',
             'marksman',
             "eslint",
             "vue_ls",
-            "jsonls"
+            "jsonls",
+            'ltex'
         })
     end,
 }

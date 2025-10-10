@@ -16,9 +16,8 @@ return {
         "leoluz/nvim-dap-go",
         -- python Usando commit pra evitar crashe
         { 'mfussenegger/nvim-dap-python'},
-        -- { 'Diaoul/nvim-dap-python',  branch = 'fix-empty-env-table' },
         -- js
-        "mxsdev/nvim-dap-vscode-js",
+        --
         {
             'Joakker/lua-json5',
             build = './install.sh'
@@ -116,10 +115,47 @@ return {
                 -- Update this to ensure that you have the debuggers for the langs you want
                 'php',
                 'node',
+                "js-debug-adapter",
                 -- 'elixir',
                 'python'
             },
         }
+        require("dap").adapters["pwa-node"] = {
+            type = "server",
+            host = "localhost",
+            port = "${port}",
+            executable = {
+                command = "node",
+                -- 💀 Make sure to update this path to point to your installation
+                args = {vim.fn.expand "$MASON/packages/js-debug-adapter/js-debug" .. "src/dapDebugServer.js", "${port}"},
+            }
+        }
+        local js_filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
+
+        local vscode = require("dap.ext.vscode")
+        vscode.type_to_filetypes["node"] = js_filetypes
+        vscode.type_to_filetypes["pwa-node"] = js_filetypes
+
+        for _, language in ipairs(js_filetypes) do
+            if not dap.configurations[language] then
+                dap.configurations[language] = {
+                    {
+                        type = "pwa-node",
+                        request = "launch",
+                        name = "Launch file",
+                        program = "${file}",
+                        cwd = "${workspaceFolder}",
+                    },
+                    {
+                        type = "pwa-node",
+                        request = "attach",
+                        name = "Attach",
+                        processId = require("dap.utils").pick_process,
+                        cwd = "${workspaceFolder}",
+                    },
+                }
+            end
+        end
 
         -- table.insert(require('dap').configurations.python, {
         --     name = "Pytest: Current File",
@@ -180,7 +216,7 @@ return {
         --
         require('dap-python').setup('uv')
         dap.adapters.debugpy = dap.adapters.python
-        dap.adapters.node = dap.adapters.node2
+        dap.adapters.node = dap.adapters['pwa-node']
 
         local keymap = vim.keymap
         -- dap keybinds

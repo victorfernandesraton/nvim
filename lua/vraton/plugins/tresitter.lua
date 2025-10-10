@@ -1,26 +1,21 @@
 return {
     "nvim-treesitter/nvim-treesitter",
-    config = function()
-        require('nvim-treesitter.configs').setup {
-            ensure_installed = {
-                -- "elixir",
-                -- "heex",
-                -- "eex",
-                'vim',
-                'vimdoc',
-                'lua',
-                'python',
-                'typescript',
-                'javascript',
-                'css',
-                'go',
-                'rust',
-                "html"
-            },
+    branch = 'main',
+    lazy = false,
+    build = ':TSUpdate',
 
-            auto_install = true,
-            highlight = { enable = true },
-            indent = { enable = true },
-        }
+    config = function()
+        require('nvim-treesitter').install({
+            'vim',
+            'vimdoc',
+            'lua',
+            'python',
+            'typescript',
+            'javascript',
+            'css',
+            'go',
+            'rust',
+            "html"
+        })
     end
 }

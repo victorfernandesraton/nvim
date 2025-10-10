@@ -15,6 +15,7 @@ vim.o.scrolloff = 4
 vim.o.colorcolumn = "80"
 vim.o.updatetime = 50
 vim.o.cursorline = true
+vim.o.winborder='double'
 
 -- turn on termguicolors for tokyonight colorscheme to work
 -- (have to use iterm2 or any other true color terminal)
