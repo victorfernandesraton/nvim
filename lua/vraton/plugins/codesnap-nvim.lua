@@ -1,5 +1,6 @@
 local result = {
     "mistricky/codesnap.nvim",
+    event = "VeryLazy",
     build = "make build_generator",
     keys = {
         { "<leader>cc", ":CodeSnap<CR>",     mode = "x", desc = "Save selected code snapshot into clipboard" },

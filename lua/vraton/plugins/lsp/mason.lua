@@ -1,28 +1,41 @@
 return {
-
-    'williamboman/mason.nvim',
+    'mason-org/mason-lspconfig.nvim',
     dependencies = {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
+        'williamboman/mason.nvim',
     },
+    lazy = false,
+    build= ":MasonUpdate",
     config = function()
-        local mason = require("mason")
         local mason_tool_installer = require("mason-tool-installer")
-        -- enable mason and configure icons
-        mason.setup({
-            ensure_installed = {
-            }
-        })
         mason_tool_installer.setup({
             ensure_installed = {
                 "ruff",
                 "goimports",
                 "golines",
-                "golangci-lint",
-                "mypy",
                 "phpcbf",
-                "phpstan",
-                "eslint_d"
             },
+        })
+
+        local mason_lspconfig = require("mason-lspconfig")
+        mason_lspconfig.setup({
+            ensure_installed = {
+                'denols',
+                "ts_ls",
+                "html",
+                "cssls",
+                "lua_ls",
+                "ruff",
+                "pylsp",
+                "gopls",
+                'marksman',
+                'sqls',
+                'bashls',
+                "eslint",
+                "vue_ls",
+                "jsonls",
+                "ltex"
+            }
         })
     end
 }
