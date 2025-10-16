@@ -15,6 +15,7 @@ vim.o.scrolloff = 4
 vim.o.colorcolumn = "80"
 vim.o.updatetime = 50
 vim.o.cursorline = true
+vim.o.autoread = true
 vim.o.winborder='rounded'
 
 -- turn on termguicolors for tokyonight colorscheme to work
@@ -22,7 +23,7 @@ vim.o.winborder='rounded'
 vim.o.termguicolors = true
 vim.o.background = "dark" -- colorschemes that can be light or dark will be made dark
 vim.o.signcolumn = "yes"  -- show sign column so that text doesn't shift
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+vim.api.nvim_set_hl(0, "Normal", { bg = "none" }) -- make background invisible
 -- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
 -- split windows
@@ -31,9 +32,8 @@ vim.o.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 vim.o.swapfile = false
--- patch for ntre
 vim.g.netrw_keepdir = 1
--- vim.g.netrw_liststyle  = 3
+vim.g.netrw_liststyle  = 3
 
 require("vraton.lazy")
 
