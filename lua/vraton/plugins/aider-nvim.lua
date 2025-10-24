@@ -18,7 +18,7 @@ return {
         { "<leader>aR", "<cmd>Aider reset<cr>",        desc = "Reset session (clean history and drop all files)" },
     },
     dependencies = {
-        "folke/snacks.nvim",
+        {"folke/snacks.nvim", tag = "v2.20.0"},
     },
     opts = {
         win = {
